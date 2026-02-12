@@ -5,7 +5,7 @@
   "engines": {
     "node": "20.x"
   },
-  "packageManager": "pnpm@9.0.0",
+  "packageManager": "pnpm@9.12.3",
   "scripts": {
     "start": "ng serve",
     "build": "npx ng build --configuration production",
