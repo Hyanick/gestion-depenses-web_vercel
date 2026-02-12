@@ -43,7 +43,6 @@
           "configurations": {
             "production": {
               "optimization": true,
-              "vendorChunk": false,
               "extractLicenses": true,
               "sourceMap": false,
               "outputHashing": "all",
@@ -59,7 +58,8 @@
                   "maximumError": "50kB"
                 }
               ]
-            },
+            }
+            ,
             "development": {
               "optimization": false,
               "extractLicenses": false,
