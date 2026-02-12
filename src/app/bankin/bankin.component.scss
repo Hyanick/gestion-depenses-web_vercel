@@ -1,0 +1,210 @@
+.bankin-analyse {
+  font-family: "Inter", "Roboto", Arial, sans-serif;
+  background: #f9fafc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 70px; /* espace pour la bottom nav */
+}
+
+/* HEADER BLEU */
+.analyse-header {
+  background: linear-gradient(135deg, #2da9ff, #4fc3f7);
+  color: white;
+  padding: 1rem;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    font-size: 1.4em;
+    font-weight: 600;
+  }
+
+  .header-icons {
+    display: flex;
+    gap: 0.5rem;
+
+    button {
+      color: white;
+    }
+  }
+}
+
+/* ONGLET SORTIES / ENTRÉES / RÉCURRENCES */
+.analyse-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+
+  .tab {
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+
+    &.active {
+      border-bottom: 3px solid white;
+    }
+  }
+}
+
+/* SÉLECTEUR DE MOIS */
+.month-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+  font-weight: 500;
+
+  .nav-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #777;
+    cursor: pointer;
+  }
+
+  .month {
+    margin: 0 1rem;
+  }
+}
+
+/* DONUT PLACEHOLDER */
+.donut-placeholder {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #fdd835 0% 47%,
+    #ec407a 47% 65%,
+    #29b6f6 65% 73%,
+    #ab47bc 73% 80%,
+    #7e57c2 80% 84%,
+    #26a69a 84% 87%,
+    #bdbdbd 87% 100%
+  );
+  position: relative;
+  margin: 0 auto 1rem;
+}
+
+.donut-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .amount {
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+
+  .label {
+    font-size: 0.8rem;
+    color: #777;
+  }
+}
+
+/* LISTE DES CATÉGORIES */
+.categories {
+  list-style: none;
+  padding: 0;
+  margin: 0 1rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.category {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #eee;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .icon.cat {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+
+  .cat.grey {
+    background-color: #bdbdbd;
+  }
+  .cat.yellow {
+    background-color: #fdd835;
+  }
+  .cat.pink {
+    background-color: #ec407a;
+  }
+
+  .info {
+    flex: 1;
+    margin-left: 0.8rem;
+
+    .title {
+      font-weight: 500;
+    }
+
+    .details {
+      font-size: 0.8rem;
+      color: #777;
+    }
+  }
+
+  .amount {
+    font-weight: 600;
+  }
+}
+
+/* BARRE DE NAVIGATION INFÉRIEURE */
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: white;
+  border-top: 1px solid #ddd;
+  padding: 0.5rem 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #777;
+  font-size: 0.8rem;
+  position: relative;
+
+  &.active {
+    color: #2da9ff;
+  }
+
+  mat-icon {
+    font-size: 22px;
+  }
+}

@@ -1,0 +1,1009 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:host {
+  display: block;
+  font-family: "Inter", "Roboto", Arial, sans-serif;
+  background: #f9fafc;
+  padding: 1rem;
+}
+
+/* HEADER */
+.bankin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #2da9ff, #4fc3f7);
+  color: white;
+  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+
+  .solde-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .solde-label {
+    font-size: 0.9em;
+    opacity: 0.9;
+  }
+
+  .solde-value {
+    font-size: 1.4em;
+    font-weight: 700;
+    margin-top: 0.2em;
+
+    &.positif {
+      color: #c8f7c5;
+    }
+
+    &.negatif {
+      color: rgba(179, 8, 8, 0.313);
+    }
+  }
+
+  .add-btn {
+    background: white;
+    color: #2da9ff;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* LISTE */
+.bankin-list {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* ROW */
+.bankin-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  padding: 0.9em 1em;
+  border-bottom: 1px solid #f1f5f9;
+  position: relative;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #f9fbfd;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .cat-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #e0e7ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4em;
+    flex-shrink: 0;
+    color: white;
+  }
+
+  .main-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+
+    .cat-name {
+      font-weight: 600;
+      font-size: 1.05em;
+      letter-spacing: 0.01em;
+    }
+
+    .desc {
+      font-size: 0.9em;
+      color: #666;
+      margin-top: 0.1em;
+    }
+  }
+
+  .amount {
+    flex: 1.2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-weight: 600;
+
+    input {
+      width: 80px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      padding: 0.3em 0.5em;
+      font-size: 1em;
+      margin-right: 0.2em;
+      text-align: right;
+      background: #f8fafc;
+      font-family: inherit;
+      transition: border-color 0.2s;
+
+      &:focus {
+        border-color: #2da9ff;
+        outline: none;
+      }
+    }
+
+    .currency {
+      font-size: 1em;
+      color: #888;
+      margin-left: 0.1em;
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    margin-left: 0.5em;
+
+    button {
+      padding: 0.2em;
+    }
+  }
+
+  /* Swipe actions */
+  .swipe-action {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4em;
+    opacity: 0.9;
+    pointer-events: none;
+    border-radius: 8px;
+
+    &.edit {
+      left: 0;
+      color: #1976d2;
+      background: #e3f2fd;
+    }
+
+    &.delete {
+      right: 0;
+      color: #dc2626;
+      background: #ffebee;
+    }
+  }
+}
+
+/* TOTAL */
+.bankin-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 1.1em;
+  padding: 1em 1.5em;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  color: #333;
+}
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  :host {
+    padding: 0.5rem;
+  }
+
+  .bankin-header {
+    flex-direction: row;
+    align-items: center;
+    padding: 0.8rem 1rem;
+
+    .solde-info {
+      flex: 1;
+    }
+
+    .solde-value {
+      font-size: 1.2em;
+    }
+
+    .add-btn {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .bankin-row {
+    font-size: 0.95em;
+    padding: 0.7em 0.8em;
+
+    .cat-icon {
+      width: 36px;
+      height: 36px;
+      font-size: 1.2em;
+    }
+
+    .amount input {
+      width: 65px;
+      font-size: 0.9em;
+    }
+  }
+
+  .bankin-total-row {
+    font-size: 1em;
+    padding: 0.8em 1em;
+  }
+}
+
+.clean-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+
+  .action-btn {
+    background: none;
+    color: #94a3b8;
+    transition: color 0.2s ease;
+
+    mat-icon {
+      font-size: 22px;
+    }
+
+    &:hover {
+      color: #2da9ff;
+    }
+
+    &.delete:hover {
+      color: #dc2626;
+    }
+  }
+}
+
+.inline-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3em;
+  margin-left: 0.3em;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+
+  mat-icon {
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+
+    &.edit {
+      color: #64748b;
+    }
+
+    &.delete {
+      color: #94a3b8;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &.edit:hover {
+      color: #2da9ff;
+    }
+
+    &.delete:hover {
+      color: #dc2626;
+    }
+  }
+
+  /* Les icônes deviennent plus visibles au survol de la ligne */
+  .bankin-row:hover & {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.bankin-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.55em 0.8em; /* ↓ réduit la hauteur */
+  border-bottom: 1px solid #f1f5f9;
+  position: relative;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #f9fbfd;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .cat-icon {
+    width: 34px; /* ↓ plus petit */
+    height: 34px;
+    border-radius: 50%;
+    background: #e0e7ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    flex-shrink: 0;
+    color: white;
+  }
+
+  .main-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2; /* ↓ resserre le texte */
+
+    .cat-name {
+      font-weight: 600;
+      font-size: 0.95em; /* ↓ plus petit */
+      letter-spacing: 0.01em;
+    }
+
+    .desc {
+      font-size: 0.85em;
+      color: #666;
+      margin-top: 0.1em;
+    }
+  }
+
+  .amount {
+    flex: 1.2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-weight: 600;
+
+    input {
+      width: 70px; /* ↓ plus compact */
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      padding: 0.2em 0.4em; /* ↓ réduit le padding */
+      font-size: 0.9em;
+      margin-right: 0.2em;
+      text-align: right;
+      background: #f8fafc;
+      font-family: inherit;
+      transition: border-color 0.2s;
+
+      &:focus {
+        border-color: #2da9ff;
+        outline: none;
+      }
+    }
+
+    .currency {
+      font-size: 0.9em;
+      color: #888;
+      margin-left: 0.1em;
+    }
+  }
+
+  /* Actions compactes avec fade-in */
+  .inline-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+    margin-left: 0.2em;
+    opacity: 0;
+    transform: translateX(4px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 18px; /* ↓ plus petit */
+      cursor: pointer;
+      color: #94a3b8;
+      transition: color 0.2s ease, transform 0.2s ease;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      &.edit:hover {
+        color: #2da9ff;
+      }
+
+      &.delete:hover {
+        color: #dc2626;
+      }
+    }
+
+    .bankin-row:hover & {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+@media (min-width: 700px) {
+  .bankin-row {
+    padding: 0.45em 0.7em;
+  }
+}
+
+//////////////////////////////FINAL/////////////////////
+///
+.bankin-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.55em 0.8em;
+  border-bottom: 1px solid #f1f5f9;
+  position: relative;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #f9fbfd;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .cat-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #e0e7ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    flex-shrink: 0;
+    color: white;
+  }
+
+  .main-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+
+    .cat-name {
+      font-weight: 600;
+      font-size: 0.95em;
+      letter-spacing: 0.01em;
+    }
+
+    .desc {
+      font-size: 0.85em;
+      color: #666;
+      margin-top: 0.1em;
+    }
+  }
+
+  .amount {
+    flex: 1.2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-weight: 600;
+
+    input {
+      width: 70px;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      padding: 0.2em 0.4em;
+      font-size: 0.9em;
+      margin-right: 0.2em;
+      text-align: right;
+      background: #f8fafc;
+      font-family: inherit;
+      transition: border-color 0.2s;
+
+      &:focus {
+        border-color: #2da9ff;
+        outline: none;
+      }
+    }
+
+    .currency {
+      font-size: 0.9em;
+      color: #888;
+      margin-left: 0.1em;
+    }
+  }
+
+  /* Actions toujours visibles */
+  .inline-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    margin-left: 0.3em;
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 18px;
+      cursor: pointer;
+      color: #94a3b8;
+      transition: color 0.2s ease, transform 0.2s ease;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      &.edit:hover {
+        color: #2da9ff;
+      }
+
+      &.delete:hover {
+        color: #dc2626;
+      }
+    }
+  }
+}
+
+/*
+  // Apparition fluide au survol de la ligne
+  .bankin-row:hover & {
+    opacity: 1;
+    transform: translateX(0);
+  }
+*/
+
+/*
+@import url("https://fonts.googleapis.com/css?family=Inter:400,600&display=swap");
+
+.bankin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1em;
+  font-family: "Inter", "Roboto", Arial, sans-serif;
+  .solde-label {
+    font-size: 1.1em;
+    color: #444;
+    font-weight: 500;
+  }
+  .solde-value {
+    font-size: 1.3em;
+    font-weight: 700;
+    margin-left: 0.5em;
+    &.positif {
+      color: #16a34a;
+    }
+    &.negatif {
+      color: #dc2626;
+    }
+  }
+  .add-btn {
+    margin-left: auto;
+    box-shadow: 0 2px 8px #0002;
+  }
+}
+
+.bankin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #0001;
+  padding: 0.5em 0.5em 0 0.5em;
+  font-family: "Inter", "Roboto", Arial, sans-serif;
+}
+
+.bankin-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.7em 0.2em;
+  border-bottom: 1px solid #f1f5f9;
+  background: #fff;
+  border-radius: 8px;
+  position: relative;
+  transition: background 0.2s;
+  &:last-child {
+    border-bottom: none;
+  }
+  .cat-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #e0e7ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    margin-right: 0.2em;
+    flex-shrink: 0;
+  }
+  .main-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    .cat-name {
+      font-weight: 600;
+      font-size: 1.05em;
+      letter-spacing: 0.01em;
+    }
+    .desc {
+      font-size: 0.98em;
+      color: #444;
+      margin-top: 0.1em;
+    }
+  }
+  .amount {
+    flex: 1.2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-weight: 600;
+    input {
+      width: 80px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      padding: 0.2em 0.5em;
+      font-size: 1em;
+      margin-right: 0.2em;
+      text-align: right;
+      background: #f8fafc;
+      font-family: inherit;
+    }
+    .currency {
+      font-size: 1em;
+      color: #888;
+      margin-left: 0.1em;
+    }
+    &.income {
+      color: #16a34a;
+    }
+    &.expense {
+      color: #dc2626;
+    }
+  }
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    margin-left: 0.5em;
+    button {
+      padding: 0.2em;
+    }
+  }
+  // Swipe actions (mobile)
+  .swipe-action {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4em;
+    opacity: 0.85;
+    pointer-events: none;
+    &.edit {
+      left: 0;
+      color: #1976d2;
+      background: #e3f2fd;
+    }
+    &.delete {
+      right: 0;
+      color: #dc2626;
+      background: #ffebee;
+    }
+  }
+}
+
+.bankin-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-top: 0.7em;
+  padding: 0.7em 1em 0.7em 2.5em;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+@media (max-width: 700px) {
+  .bankin-header {
+    font-size: 0.98em;
+  }
+  .bankin-list {
+    padding: 0.2em;
+  }
+  .bankin-row {
+    font-size: 0.98em;
+  }
+  .main-info .cat-name {
+    font-size: 1em;
+  }
+  .amount input {
+    width: 65px;
+    font-size: 0.98em;
+  }
+}
+
+/*
+.bankin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #0001;
+  padding: 0.5em 0.5em 0 0.5em;
+}
+
+.bankin-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.7em 0.2em;
+  border-bottom: 1px solid #f1f5f9;
+  background: #fff;
+  border-radius: 8px;
+  &:last-child { border-bottom: none; }
+  .cat-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #e0e7ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    margin-right: 0.2em;
+  }
+  .main-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    .cat-name {
+      font-weight: 600;
+      font-size: 1.05em;
+      color: #1976d2;
+    }
+    .desc {
+      font-size: 0.98em;
+      color: #444;
+    }
+  }
+  .amount-date {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    .amount {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      input {
+        width: 80px;
+        border-radius: 6px;
+        border: 1px solid #cbd5e1;
+        padding: 0.2em 0.5em;
+        font-size: 1em;
+        margin-right: 0.2em;
+        text-align: right;
+      }
+      .currency {
+        font-size: 1em;
+        color: #888;
+        margin-left: 0.1em;
+      }
+      &.income { color: #16a34a; }
+      &.expense { color: #dc2626; }
+    }
+    .date {
+      font-size: 0.93em;
+      color: #888;
+      margin-top: 0.1em;
+    }
+  }
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    margin-left: 0.5em;
+    button { padding: 0.2em; }
+  }
+}
+
+.bankin-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-top: 0.7em;
+  padding: 0.7em 1em 0.7em 2.5em;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+@media (max-width: 700px) {
+  .bankin-list { padding: 0.2em; }
+  .bankin-row { font-size: 0.98em; }
+  .main-info .cat-name { font-size: 1em; }
+  .amount-date .amount input { width: 65px; font-size: 0.98em; }
+}
+*/
+/*
+.table-responsive {
+  overflow-x: auto;
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #0001;
+    th, td {
+      padding: 0.7em 0.5em;
+      text-align: left;
+    }
+    th {
+      background: #e0e7ef;
+      font-weight: 600;
+    }
+    tbody tr {
+      border-bottom: 1px solid #f1f5f9;
+      &:hover {
+        background: #f5faff;
+      }
+    }
+    .amount-input {
+      display: flex;
+      align-items: center;
+      input {
+        width: 90px;
+        border-radius: 6px;
+        border: 1px solid #cbd5e1;
+        padding: 0.3em 0.7em;
+        font-size: 1em;
+        margin-right: 0.3em;
+      }
+      .currency {
+        font-size: 1em;
+        color: #888;
+      }
+    }
+    .icon {
+      font-size: 1.2em;
+      margin-right: 0.3em;
+      vertical-align: middle;
+    }
+  }
+}
+
+.cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  .transaction-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #0001;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      margin-bottom: 0.5em;
+      .icon {
+        font-size: 1.5em;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e0e7ef;
+      }
+      .cat-name {
+        font-weight: 600;
+        font-size: 1.1em;
+      }
+      .date {
+        margin-left: auto;
+        color: #888;
+        font-size: 0.95em;
+      }
+    }
+    .card-body {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .desc {
+        flex: 1;
+        font-size: 1.05em;
+      }
+      .amount-row {
+        display: flex;
+        align-items: center;
+        input {
+          width: 90px;
+          border-radius: 6px;
+          border: 1px solid #cbd5e1;
+          padding: 0.3em 0.7em;
+          font-size: 1em;
+          margin-right: 0.3em;
+        }
+        .currency {
+          font-size: 1em;
+          color: #888;
+        }
+      }
+    }
+    .card-actions {
+      display: flex;
+      gap: 0.5em;
+      margin-top: 0.5em;
+      justify-content: flex-end;
+    }
+  }
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-top: 1em;
+    padding: 0.7em 1em;
+    background: #f8fafc;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 700px) {
+  .table-responsive { display: none; }
+  .cards-list { display: flex; }
+}
+@media (min-width: 701px) {
+  .table-responsive { display: block; }
+  .cards-list { display: none; }
+}
+
+*/
+
+/*
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px #0001;
+}
+th, td {
+  padding: 0.7em 0.5em;
+  text-align: left;
+}
+th {
+  background: #e0e7ef;
+  font-weight: 600;
+}
+tbody tr:nth-child(even) {
+  background: #f1f5f9;
+}
+.income {
+  color: #16a34a;
+  font-weight: bold;
+}
+.expense {
+  color: #dc2626;
+  font-weight: bold;
+}
+.icon {
+  font-size: 1.2em;
+  margin-right: 0.3em;
+}
+
+@media (max-width: 900px) {
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+  }
+}
+*/

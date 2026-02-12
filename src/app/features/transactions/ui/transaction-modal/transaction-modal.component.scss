@@ -1,0 +1,23 @@
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+  label {
+    font-weight: 500;
+    margin-bottom: 0.3em;
+  }
+  input,
+  select {
+    padding: 0.5em;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+  }
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1em;
+  margin-top: 1em;
+}

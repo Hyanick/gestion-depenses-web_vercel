@@ -1,0 +1,156 @@
+<div class="bankin-dashboard">
+  <!-- HEADER BLEU -->
+  <header class="analyse-header">
+    <div class="header-top">
+      <h1>Analyse</h1>
+      <div class="header-icons">
+        <button mat-icon-button>
+          <mat-icon>settings</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- ONGLET SORTIES / ENTRÉES / RÉCURRENCES -->
+    <div class="analyse-tabs">
+      <button class="tab" [class.active]="activeTab() === 'sorties'" (click)="setActiveTab('sorties')">
+        Sorties
+      </button>
+      <button class="tab" [class.active]="activeTab() === 'entrees'" (click)="setActiveTab('entrees')">
+        Entrées
+      </button>
+      <button class="tab" [class.active]="activeTab() === 'recurrences'" (click)="setActiveTab('recurrences')">
+        Récurrences
+      </button>
+    </div>
+  </header>
+
+  <!-- BARRE DE FILTRES -->
+  <div class="bankin-filters">
+    <div class="month-nav">
+      <button class="nav-btn" (click)="previousMonth()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <div class="month-display" [matMenuTriggerFor]="monthMenu">
+        {{ selectedMonth() | date: 'MMMM yyyy' : undefined : 'fr' }}
+        <mat-icon>expand_more</mat-icon>
+      </div>
+
+      <button class="nav-btn" (click)="nextMonth()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+
+    <div class="secondary-filters">
+      <button mat-icon-button [matMenuTriggerFor]="yearMenu">
+        <mat-icon>calendar_today</mat-icon>
+      </button>
+
+      <button mat-icon-button [matMenuTriggerFor]="categoryMenu">
+        <mat-icon>category</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- SOLDE DU MOIS -->
+  <div class="solde-header">
+    <div class="solde-card">
+      <span class="label">Solde du mois</span>
+      <span class="value" [ngClass]="{ positif: solde() >= 0, negatif: solde() < 0 }">
+        {{ solde() | currency:'EUR' }}
+      </span>
+    </div>
+
+    <button mat-fab color="primary" class="add-btn" (click)="openModal()" matTooltip="Ajouter une transaction"
+      matTooltipPosition="above">
+      <mat-icon>add</mat-icon>
+      <span class="add-label">Ajouter une transaction</span>
+    </button>
+  </div>
+
+  <!-- MENUS CONTEXTUELS -->
+  <mat-menu #monthMenu="matMenu">
+    <button mat-menu-item *ngFor="let m of months" (click)="onMonthChange(m)">
+      {{ m | date: 'MMMM yyyy' : undefined : 'fr' }}
+    </button>
+  </mat-menu>
+
+  <mat-menu #yearMenu="matMenu">
+    <button mat-menu-item *ngFor="let y of years" (click)="onYearChange(y)">
+      {{ y }}
+    </button>
+  </mat-menu>
+
+  <mat-menu #categoryMenu="matMenu">
+    <button mat-menu-item (click)="onCategoryChange(null)">
+      Toutes catégories
+    </button>
+    <button mat-menu-item *ngFor="let cat of categories$ | async" (click)="onCategoryChange(cat.id)">
+      {{ cat.icon }} {{ cat.name }}
+    </button>
+  </mat-menu>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="bankin-content">
+    @if (activeTab() === 'sorties') {
+    <section class="table-section">
+      <h2>Total sorties du mois :</h2>
+      <p class="total negatif">{{ depenses() | currency:'EUR' }}</p>
+
+      <app-transaction-table [type]="'expense'" [transactions]="transactions() ?? []"
+        [categoriesById]="(categoriesById$ | async) ?? {}" (edit)="handleEdit($event)"
+        (delete)="deleteTransaction($event)">
+      </app-transaction-table>
+    </section>
+    }
+
+    @if (activeTab() === 'entrees') {
+    <section class="table-section">
+      <h2>Total entrées du mois :</h2>
+      <p class="total positif">{{ revenus() | currency:'EUR' }}</p>
+
+      <app-transaction-table [type]="'income'" [transactions]="transactions() ?? []"
+        [categoriesById]="(categoriesById$ | async) ?? {}" (edit)="handleEdit($event)"
+        (delete)="deleteTransaction($event)">
+      </app-transaction-table>
+    </section>
+    }
+
+    @if (activeTab() === 'recurrences') {
+    <section class="table-section">
+      <h2>Récurrences détectées :</h2>
+      <p class="total">À venir...</p>
+    </section>
+    }
+  </main>
+
+  <!-- MODALE -->
+  @if (showModal()) {
+  <app-transaction-modal [transaction]="editingTransaction()" (close)="closeModal()"
+    (save)="addOrEditTransaction($event)">
+  </app-transaction-modal>
+  }
+
+  <!-- FOOTER MOBILE -->
+  <nav class="bottom-nav">
+    <button class="nav-item">
+      <mat-icon>home</mat-icon>
+      <span>Accueil</span>
+    </button>
+    <button class="nav-item active">
+      <mat-icon>pie_chart</mat-icon>
+      <span>Analyse</span>
+    </button>
+    <button class="nav-item">
+      <mat-icon>list_alt</mat-icon>
+      <span>Transactions</span>
+    </button>
+    <button class="nav-item">
+      <mat-icon>settings</mat-icon>
+      <span>Paramètres</span>
+    </button>
+  </nav>
+</div>

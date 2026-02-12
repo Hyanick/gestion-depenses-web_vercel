@@ -1,0 +1,440 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+.bankin-dashboard {
+  font-family: "Inter", "Roboto", Arial, sans-serif;
+  background: #f9fafc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 70px; /* espace pour la bottom nav */
+}
+
+/* --- HEADER BLEU --- */
+.analyse-header {
+  background: linear-gradient(135deg, #2da9ff, #4fc3f7);
+  color: white;
+  padding: 1rem;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    font-size: 1.4em;
+    font-weight: 600;
+  }
+
+  .header-icons {
+    display: flex;
+    gap: 0.5rem;
+
+    button {
+      color: white;
+    }
+  }
+}
+
+/* --- ONGLET SORTIES / ENTRÉES / RÉCURRENCES --- */
+.analyse-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+
+  .tab {
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+
+    &.active {
+      border-bottom: 3px solid white;
+    }
+  }
+}
+
+/* --- BARRE DE FILTRES --- */
+.bankin-filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 0.8rem 1.2rem;
+  margin: 1rem;
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .nav-btn {
+    background: none;
+    border: none;
+    color: #2da9ff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    mat-icon {
+      font-size: 24px;
+    }
+  }
+
+  .month-display {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #333;
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: 0.4em 1em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #e0f2fe;
+    }
+
+    mat-icon {
+      font-size: 20px;
+      color: #64748b;
+    }
+  }
+}
+
+.secondary-filters {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  button {
+    color: #64748b;
+    transition: color 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+      color: #2da9ff;
+      transform: scale(1.1);
+    }
+
+    mat-icon {
+      font-size: 22px;
+    }
+  }
+}
+
+/* --- SOLDE DU MOIS --- */
+.solde-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #2da9ff, #4fc3f7);
+  border-radius: 16px;
+  padding: 1rem 1.5rem;
+  color: white;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 1rem;
+}
+
+.solde-card {
+  display: flex;
+  flex-direction: column;
+
+  .label {
+    font-size: 0.9em;
+    opacity: 0.9;
+  }
+
+  .value {
+    font-size: 1.6em;
+    font-weight: 700;
+    margin-top: 0.2em;
+
+    &.positif {
+      color: #c8f7c5;
+    }
+
+    &.negatif {
+      color: #ffebee;
+    }
+  }
+}
+
+/* --- BOUTON ADAPTATIF + TOOLTIP --- */
+.add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: white;
+  color: #2da9ff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  padding: 0 1.2rem;
+  height: 48px;
+  border-radius: 24px;
+  cursor: pointer;
+
+  mat-icon {
+    font-size: 22px;
+  }
+
+  .add-label {
+    font-weight: 600;
+    font-size: 0.95em;
+    color: #2da9ff;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+    background: #f0f9ff;
+  }
+}
+
+/* --- TOOLTIP PERSONNALISÉ --- */
+::ng-deep .mat-mdc-tooltip {
+  background-color: #2da9ff !important;
+  color: white !important;
+  font-size: 0.85em;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 0.4em 0.8em;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* --- CONTENU PRINCIPAL --- */
+.bankin-content {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.table-section {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  flex: 1;
+  min-width: 320px;
+  max-width: 500px;
+  padding: 1rem;
+
+  h2 {
+    font-size: 1em;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.3em;
+  }
+
+  .total {
+    font-size: 1.3em;
+    font-weight: 700;
+    margin-bottom: 1rem;
+
+    &.positif {
+      color: #16a34a;
+    }
+
+    &.negatif {
+      color: #dc2626;
+    }
+  }
+}
+
+/* --- FOOTER MOBILE --- */
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: white;
+  border-top: 1px solid #ddd;
+  padding: 0.5rem 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #777;
+  font-size: 0.8rem;
+  position: relative;
+
+  &.active {
+    color: #2da9ff;
+  }
+
+  mat-icon {
+    font-size: 22px;
+  }
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+  .bankin-filters {
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.8rem;
+  }
+
+  .solde-header {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.8rem 1rem;
+  }
+
+  .solde-card .value {
+    font-size: 1.3em;
+  }
+
+  .add-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    padding: 0;
+    gap: 0;
+
+    .add-label {
+      display: none;
+    }
+  }
+
+  .bankin-content {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .table-section {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}
+/* --- CHECK DANS LES MENUS --- */
+.menu-check {
+  margin-left: auto;
+  color: #2da9ff;
+  font-size: 20px;
+}
+
+/* Ajustement du bouton menu pour aligner le texte et l’icône */
+::ng-deep .mat-mdc-menu-item {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+::ng-deep .mat-mdc-menu-item.selected {
+  background-color: #e0f2fe !important;
+  color: #2da9ff !important;
+}
+.menu-item-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.menu-check {
+  color: #2da9ff;
+  font-size: 20px;
+}
+/* --- FOOTER MOBILE --- */
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: white;
+  border-top: 1px solid #e2e8f0;
+  padding: 0.6rem 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 0.4rem 0.6rem;
+  transition: all 0.25s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  mat-icon {
+    font-size: 22px;
+    margin-bottom: 0.2rem;
+    transition: transform 0.25s ease, color 0.25s ease;
+  }
+
+  &:hover {
+    background: #f1f5f9;
+    color: #2da9ff;
+
+    mat-icon {
+      transform: scale(1.1);
+      color: #2da9ff;
+    }
+  }
+
+  &.active {
+    color: #2da9ff;
+    font-weight: 600;
+
+    mat-icon {
+      color: #2da9ff;
+      transform: scale(1.15);
+    }
+
+    span {
+      color: #2da9ff;
+    }
+  }
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 700px) {
+  .bottom-nav {
+    padding: 0.4rem 0;
+  }
+
+  .nav-item {
+    font-size: 0.75rem;
+
+    mat-icon {
+      font-size: 20px;
+    }
+  }
+}
+

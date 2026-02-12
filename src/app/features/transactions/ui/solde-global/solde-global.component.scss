@@ -1,0 +1,13 @@
+.solde-global {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+  padding: 1em 0;
+  margin-bottom: 1em;
+  font-size: 1.3em;
+  text-align: center;
+  &.positif { color: #16a34a; }
+  &.negatif { color: #dc2626; }
+  box-shadow: 0 2px 8px #0001;
+}

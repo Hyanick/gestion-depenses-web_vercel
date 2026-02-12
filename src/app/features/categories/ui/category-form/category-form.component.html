@@ -1,0 +1,43 @@
+<div class="modal-backdrop1">
+  <div class="modal1">
+    <h2 mat-dialog-title>@if(form.value.id) { Modifier } @else { Ajouter } une catégorie</h2>
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Nom</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Icône</mat-label>
+        <mat-select formControlName="icon">
+          <mat-option *ngFor="let icon of iconsList" [value]="icon">
+            <span *ngIf="isEmoji(icon)">{{ icon }}</span>
+            <mat-icon *ngIf="!isEmoji(icon)">{{ icon }}</mat-icon>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="type">
+          <mat-option value="income">Revenu</mat-option>
+          <mat-option value="expense">Dépense</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Champ couleur SANS mat-form-field -->
+      <div class="color-row">
+        <label>Couleur</label>
+        <input type="color" formControlName="color"
+          style="width: 48px; height: 32px; border: none; background: none; margin-left: 8px;" />
+      </div>
+
+      <div class="actions">
+        <button mat-stroked-button type="button" (click)="close()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+          @if(form.value.id) { Modifier } @else { Ajouter }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

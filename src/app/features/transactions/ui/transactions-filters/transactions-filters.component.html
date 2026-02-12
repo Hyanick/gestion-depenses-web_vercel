@@ -1,0 +1,24 @@
+<div class="filters-bar" [formGroup]="form">
+  <!-- Sélecteur de mois -->
+  <mat-form-field appearance="outline" class="month">
+    <mat-label>Mois</mat-label>
+    <input matInput type="month" formControlName="month" />
+  </mat-form-field>
+
+  <!-- Sélecteur de catégorie -->
+  <mat-form-field appearance="outline" class="category">
+    <mat-label>Catégorie</mat-label>
+    <mat-select formControlName="categoryId">
+      <mat-option [value]="null">Toutes catégories</mat-option>
+      <!-- Affiche toutes les catégories reçues en input -->
+      @for (cat of categories(); track cat.id) {
+        <mat-option [value]="cat.id">{{ cat.icon }} {{ cat.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Bouton d'ajout -->
+  <button mat-raised-button color="primary" type="button" (click)="add.emit()">
+    + Ajouter une transaction
+  </button>
+</div>

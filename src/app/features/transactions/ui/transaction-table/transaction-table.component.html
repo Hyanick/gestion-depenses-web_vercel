@@ -1,0 +1,238 @@
+<!-- Header solde + ajout -->
+<!-- <div class="bankin-header">
+  <div class="solde-info">
+    @if(type() ==='income') {
+    <span class="solde-label">Total revenus du mois :</span>
+    } @else {
+    <span class="solde-label">Total dépenses du mois :</span>
+    }
+    <span class="solde-value" [ngClass]="{ positif: type()==='income', negatif: type()=== 'expense'}">
+      {{ total | currency:'EUR':'symbol':'1.2-2' }}
+    </span>
+  </div>
+</div> -->
+
+<!-- Liste façon Bankin' -->
+<div class="bankin-list">
+  <div class="bankin-row" *ngFor="let t of filtered; trackBy: trackById" [ngClass]="{ swipeable: isMobile }"
+    (swipeleft)="onSwipeLeft(t)" (swiperight)="onSwipeRight(t)">
+    <div class="cat-icon" [style.background]="categoriesById()[t.categoryId]?.color">
+      {{ categoriesById()[t.categoryId]?.icon || '❓' }}
+    </div>
+
+    <div class="main-info">
+      <div class="cat-name" [style.color]="categoriesById()[t.categoryId]?.color || '#1976d2'">
+        {{ categoriesById()[t.categoryId]?.name || 'Catégorie inconnue' }}
+      </div>
+      <div class="desc">{{ t.description }}</div>
+    </div>
+
+    <div class="amount">
+      <input matInput type="number" [value]="t.amount" min="0" step="0.01" (input)="onAmountChange(t, $event)" />
+      <span class="currency">€</span>
+    </div>
+
+    <!-- <div class="actions clean-actions">
+      <button mat-icon-button class="action-btn edit" (click)="onEditClick(t)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button class="action-btn delete" color="warn" (click)="delete.emit(t.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div> -->
+
+    <div class="actions inline-actions">
+      <mat-icon class="edit" (click)="onEditClick(t)">edit</mat-icon>
+      <mat-icon class="delete" (click)="delete.emit(t.id)">delete</mat-icon>
+    </div>
+
+
+
+    <!-- Mobile swipe actions -->
+    <div class="swipe-action edit" *ngIf="t._swipeEdit">
+      <mat-icon>edit</mat-icon>
+    </div>
+    <div class="swipe-action delete" *ngIf="t._swipeDelete">
+      <mat-icon>delete</mat-icon>
+    </div>
+  </div>
+
+  <!-- <div class="bankin-total-row">
+    <span>Total</span>
+    <span>{{ total | currency:'EUR' }}</span>
+  </div> -->
+</div>
+
+
+
+
+
+<!-- Header solde + ajout
+<div class="bankin-header">
+  <span class="solde-label">Solde du mois :</span>
+  <span class="solde-value" [ngClass]="{ positif: total >= 0, negatif: total < 0 }">
+    {{ total | currency:'EUR' }}
+  </span>
+  <button mat-fab color="primary" class="add-btn">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+
+
+<div class="bankin-list">
+  <div class="bankin-row" *ngFor="let t of filtered; trackBy: trackById" [ngClass]="{ swipeable: isMobile }"
+    (swipeleft)="onSwipeLeft(t)" (swiperight)="onSwipeRight(t)">
+    <div class="cat-icon" [style.background]="categoriesById()[t.categoryId]?.color">
+      {{ categoriesById()[t.categoryId]?.icon || '❓' }}
+    </div>
+    <div class="main-info">
+      <div class="cat-name" [style.color]="categoriesById()[t.categoryId]?.color || '#1976d2'">
+        {{ categoriesById()[t.categoryId]?.name || 'Catégorie inconnue' }}
+      </div>
+      <div class="desc">{{ t.description }}</div>
+    </div>
+    <div class="amount">
+      <input matInput type="number" [value]="t.amount" min="0" step="0.01" (input)="onAmountChange(t, $event)" />
+      <span class="currency">€</span>
+    </div>
+    <div class="actions">
+      <button mat-icon-button (click)="onEditClick(t)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="delete.emit(t.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+
+<div class="swipe-action edit" *ngIf="t._swipeEdit">
+  <mat-icon>edit</mat-icon>
+</div>
+<div class="swipe-action delete" *ngIf="t._swipeDelete">
+  <mat-icon>delete</mat-icon>
+</div>
+</div>
+<div class="bankin-total-row">
+  <span>Total</span>
+  <span>{{ total | currency:'EUR' }}</span>
+</div>
+</div> -->
+
+
+
+<!-- Responsive : liste compacte façon Bankin'
+<div class="bankin-list">
+  <div class="bankin-row" *ngFor="let t of filtered; trackBy: trackById">
+    <div class="cat-icon" [style.background]="categoriesById()[t.categoryId]?.color">
+      {{ categoriesById()[t.categoryId]?.icon || '❓' }}
+    </div>
+    <div class="main-info">
+      <div class="cat-name">{{ categoriesById()[t.categoryId]?.name || 'Catégorie inconnue' }}</div>
+      <div class="desc">{{ t.description }}</div>
+    </div>
+    <div class="amount-date">
+      <div class="amount" [ngClass]="type()">
+        <input matInput type="number" [value]="t.amount" min="0" step="0.01" (input)="onAmountChange(t, $event)" />
+        <span class="currency">€</span>
+      </div>
+      <div class="date">{{ t.date }}</div>
+    </div>
+    <div class="actions">
+      <button mat-icon-button (click)="onEditClick(t)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="delete.emit(t.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="bankin-total-row">
+    <span>Total</span>
+    <span>{{ total | currency:'EUR' }}</span>
+  </div>
+</div> -->
+
+
+
+
+<!-- Desktop/tablette : tableau classique
+<div class="table-responsive" *ngIf="!isMobile">
+  <table>
+    <thead>
+      <tr>
+        <th>Catégorie</th>
+        <th>Description</th>
+        <th>Date</th>
+        <th>Montant</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (t of filtered; track t.id) {
+      @let cat = categoriesById()[t.categoryId];
+      <tr>
+        <td>
+          @if (cat) {
+          <span class="icon">{{ cat.icon }}</span> {{ cat.name }}
+          } @else {
+          <span class="icon">❓</span>
+          }
+        </td>
+        <td>{{ t.description }}</td>
+        <td>{{ t.date }}</td>
+        <td [ngClass]="type()">
+          <div class="amount-input">
+            <input matInput type="number" [value]="t.amount" min="0" step="0.01" (input)="onAmountChange(t, $event)" />
+            <span class="currency">€</span>
+          </div>
+        </td>
+        <td>
+          <button mat-icon-button (click)="onEditClick(t)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="delete.emit(t.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4"><strong>Total</strong></td>
+        <td colspan="5"><strong>{{ total | currency:'EUR' }}</strong></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+Mobile : affichage en cartes
+<div class="cards-list" *ngIf="isMobile">
+  <div class="transaction-card" *ngFor="let t of filtered; trackBy: trackById">
+    <div class="card-header">
+      <span class="icon" [style.background]="categoriesById()[t.categoryId]?.color">
+        {{ categoriesById()[t.categoryId]?.icon || '❓' }}
+      </span>
+      <span class="cat-name">{{ categoriesById()[t.categoryId]?.name || 'Catégorie inconnue' }}</span>
+      <span class="date">{{ t.date }}</span>
+    </div>
+    <div class="card-body">
+      <div class="desc">{{ t.description }}</div>
+      <div class="amount-row">
+        <input matInput type="number" [value]="t.amount" min="0" step="0.01" (input)="onAmountChange(t, $event)" />
+        <span class="currency">€</span>
+      </div>
+    </div>
+    <div class="card-actions">
+      <button mat-icon-button (click)="onEditClick(t)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="delete.emit(t.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="total-row">
+    <span>Total</span>
+    <span>{{ total | currency:'EUR' }}</span>
+  </div>
+</div> -->

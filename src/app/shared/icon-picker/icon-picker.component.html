@@ -1,0 +1,6 @@
+<div class="icon-picker-grid">
+  <button *ngFor="let icon of icons" type="button" [class.selected]="icon === selected" (click)="onSelect(icon)"
+    [attr.aria-label]="icon">
+    {{ icon }}
+  </button>
+</div>

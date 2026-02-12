@@ -1,0 +1,16 @@
+.filters-bar {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  margin-bottom: 2em;
+  flex-wrap: wrap;
+}
+input[type="month"], select {
+  padding: 0.4em 0.7em;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+}
+button {
+  font-weight: 600;
+}

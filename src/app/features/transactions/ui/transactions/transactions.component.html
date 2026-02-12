@@ -1,0 +1,173 @@
+<div class="bankin-dashboard">
+  <!-- HEADER BLEU -->
+  <header class="analyse-header">
+    <div class="header-top">
+      <h1>GDM</h1>
+      <div class="header-icons">
+        <button mat-icon-button>
+          <mat-icon>settings</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- ONGLET SORTIES / ENTRÉES / RÉCURRENCES -->
+    <!-- <div class="analyse-tabs">
+      <button class="tab active">Sorties</button>
+      <button class="tab">Entrées</button>
+      <button class="tab">Récurrences</button>
+    </div> -->
+  </header>
+
+  <!-- BARRE DE FILTRES -->
+  <div class="bankin-filters">
+    <div class="month-nav">
+      <button class="nav-btn" (click)="previousMonth()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <div class="month-display" [matMenuTriggerFor]="monthMenu">
+        {{ selectedMonth() | date: 'MMMM yyyy' : undefined : 'fr' }}
+        <mat-icon>expand_more</mat-icon>
+      </div>
+
+      <button class="nav-btn" (click)="nextMonth()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+
+    <div class="secondary-filters">
+      <button mat-icon-button [matMenuTriggerFor]="yearMenu">
+        <mat-icon>calendar_today</mat-icon>
+      </button>
+
+      <button mat-icon-button [matMenuTriggerFor]="categoryMenu">
+        <mat-icon>category</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- SOLDE DU MOIS -->
+  <div class="solde-header">
+    <div class="solde-card">
+      <span class="label">Solde du mois</span>
+      <span class="value" [ngClass]="{ positif: solde() >= 0, negatif: solde() < 0 }">
+        {{ solde() | currency:'EUR' }}
+      </span>
+    </div>
+
+    <button mat-fab color="primary" class="add-btn" (click)="openModal()" matTooltip="Ajouter une transaction"
+      matTooltipPosition="above">
+      <mat-icon>add</mat-icon>
+      <span class="add-label">Ajouter une transaction</span>
+    </button>
+  </div>
+
+  <!-- MENUS CONTEXTUELS -->
+  <!-- MENU MOIS -->
+  <mat-menu #monthMenu="matMenu">
+    <button mat-menu-item *ngFor="let m of months" (click)="onMonthChange(m)" [class.selected]="selectedMonth() === m">
+      <div class="menu-item-content">
+        <span>{{ m | date: 'MMMM yyyy' : undefined : 'fr' }}</span>
+        <mat-icon *ngIf="selectedMonth() === m" class="menu-check" color="primary">
+          check
+        </mat-icon>
+      </div>
+    </button>
+  </mat-menu>
+
+  <!-- MENU ANNÉE -->
+  <mat-menu #yearMenu="matMenu">
+    <button mat-menu-item *ngFor="let y of years" (click)="onYearChange(y)" [class.selected]="selectedYear() === y">
+      <div class="menu-item-content">
+        <span>{{ y }}</span>
+        <mat-icon *ngIf="selectedYear() === y" class="menu-check" color="primary">
+          check
+        </mat-icon>
+      </div>
+    </button>
+  </mat-menu>
+
+  <!-- MENU CATÉGORIE -->
+  <mat-menu #categoryMenu="matMenu">
+    <button mat-menu-item (click)="onCategoryChange(null)" [class.selected]="selectedCategoryId() === null">
+      <div class="menu-item-content">
+        <span>Toutes catégories</span>
+        <mat-icon *ngIf="selectedCategoryId() === null" class="menu-check" color="primary">
+          check
+        </mat-icon>
+      </div>
+    </button>
+
+    <button mat-menu-item *ngFor="let cat of categories$ | async" (click)="onCategoryChange(cat.id)"
+      [class.selected]="selectedCategoryId() === cat.id">
+      <div class="menu-item-content">
+        <span>{{ cat.icon }} {{ cat.name }}</span>
+        <mat-icon *ngIf="selectedCategoryId() === cat.id" class="menu-check" color="primary">
+          check
+        </mat-icon>
+      </div>
+    </button>
+  </mat-menu>
+
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="bankin-content" [@monthSlideTransition]="monthDirection">
+
+    <section class="table-section">
+      <h2>Total revenus du mois :</h2>
+      <p class="total positif">{{ revenus() | currency:'EUR' }}</p>
+      <app-transaction-table [type]="'income'" [transactions]="transactions() ?? []"
+        [categoriesById]="(categoriesById$ | async) ?? {}" (edit)="handleEdit($event)"
+        (delete)="deleteTransaction($event)">
+      </app-transaction-table>
+    </section>
+
+    <section class="table-section">
+      <h2>Total des dépenses du mois :</h2>
+      <p class="total negatif">{{ depenses() | currency:'EUR' }}</p>
+
+      <app-transaction-table [type]="'expense'" [transactions]="transactions() ?? []"
+        [categoriesById]="(categoriesById$ | async) ?? {}" (edit)="handleEdit($event)"
+        (delete)="deleteTransaction($event)">
+      </app-transaction-table>
+    </section>
+  </main>
+
+  <!-- MODALE -->
+  @if (showModal()) {
+  <app-transaction-modal [transaction]="editingTransaction()" (close)="closeModal()"
+    (save)="addOrEditTransaction($event)">
+  </app-transaction-modal>
+  }
+
+  <!-- FOOTER MOBILE -->
+  @if(isMobile()){
+  <nav class="bottom-nav">
+    <button class="nav-item" [class.active]="activePage() === 'home'" (click)="setActivePage('home')">
+      <mat-icon>home</mat-icon>
+      <span>Accueil</span>
+    </button>
+
+    <button class="nav-item" [class.active]="activePage() === 'analyse'" (click)="setActivePage('analyse')">
+      <mat-icon>pie_chart</mat-icon>
+      <span>Analyse</span>
+    </button>
+
+    <button class="nav-item" [class.active]="activePage() === 'transactions'" (click)="setActivePage('transactions')">
+      <mat-icon>list_alt</mat-icon>
+      <span>Transactions</span>
+    </button>
+
+    <button class="nav-item" [class.active]="activePage() === 'settings'" (click)="setActivePage('settings')">
+      <mat-icon>settings</mat-icon>
+      <span>Paramètres</span>
+    </button>
+  </nav>
+
+
+  }
+
+</div>

@@ -1,0 +1,52 @@
+.categories-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2em 1em;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2em;
+}
+.categories-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+.category-card {
+  background: #f8fafc;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #0001;
+  display: flex;
+  align-items: center;
+  padding: 1em;
+  min-width: 220px;
+  flex: 1 1 220px;
+  .icon {
+    font-size: 2em;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1em;
+    color: #fff;
+  }
+  .info {
+    flex: 1;
+    .name { font-weight: 600; }
+    .type.income { color: #16a34a; }
+    .type.expense { color: #dc2626; }
+  }
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+  }
+}
+.loading {
+  text-align: center;
+  margin: 2em 0;
+}

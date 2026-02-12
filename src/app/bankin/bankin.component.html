@@ -1,0 +1,91 @@
+<div class="bankin-analyse">
+  <!-- HEADER BLEU -->
+  <header class="analyse-header">
+    <div class="header-top">
+      <h1>Analyse</h1>
+      <div class="header-icons">
+        <button mat-icon-button>
+          <mat-icon>settings</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- ONGLET SORTIES / ENTRÉES / RÉCURRENCES -->
+    <div class="analyse-tabs">
+      <button class="tab active">Sorties</button>
+      <button class="tab">Entrées</button>
+      <button class="tab">Récurrences</button>
+    </div>
+  </header>
+
+  <!-- SÉLECTEUR DE MOIS -->
+  <div class="month-selector">
+    <button class="nav-btn">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <span class="month">Avril 2022</span>
+    <button class="nav-btn">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+
+  <!-- CONTENU (exemple donut + liste) -->
+  <div class="analyse-content">
+    <div class="donut-placeholder">
+      <div class="donut-center">
+        <span class="amount">956,05 €</span>
+        <span class="label">Sorties d'argent</span>
+      </div>
+    </div>
+
+    <ul class="categories">
+      <li class="category">
+        <div class="icon cat grey"></div>
+        <div class="info">
+          <span class="title">À catégoriser</span>
+          <span class="details">6% • 2 transactions</span>
+        </div>
+        <span class="amount">62,00 €</span>
+      </li>
+      <li class="category">
+        <div class="icon cat yellow"></div>
+        <div class="info">
+          <span class="title">Alimentation & Restau.</span>
+          <span class="details">47% • 14 transactions</span>
+        </div>
+        <span class="amount">450,02 €</span>
+      </li>
+      <li class="category">
+        <div class="icon cat pink"></div>
+        <div class="info">
+          <span class="title">Achats & Shopping</span>
+          <span class="details">18% • 4 transactions</span>
+        </div>
+        <span class="amount">175,97 €</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- BARRE DE NAVIGATION INFÉRIEURE -->
+  <nav class="bottom-nav">
+    <button class="nav-item">
+      <mat-icon>home</mat-icon>
+      <span>Accueil</span>
+    </button>
+    <button class="nav-item active">
+      <mat-icon>pie_chart</mat-icon>
+      <span>Analyse</span>
+    </button>
+    <button class="nav-item">
+      <mat-icon>list_alt</mat-icon>
+      <span>Transactions</span>
+    </button>
+    <button class="nav-item">
+      <mat-icon>settings</mat-icon>
+      <span>Paramètres</span>
+    </button>
+  </nav>
+</div>

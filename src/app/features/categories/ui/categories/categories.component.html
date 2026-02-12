@@ -1,0 +1,22 @@
+<div class="categories-page">
+  <div class="header">
+    <h1>Catégories</h1>
+    <button mat-raised-button color="primary" (click)="openForm()">+ Ajouter une catégorie</button>
+  </div>
+
+  <div *ngIf="loading$ | async" class="loading">Chargement...</div>
+
+  <div class="categories-grid">
+    <div class="category-card" *ngFor="let cat of categories$ | async">
+      <div class="icon" [style.background]="cat.color">{{ cat.icon }}</div>
+      <div class="info">
+        <div class="name">{{ cat.name }}</div>
+        <div class="type" [ngClass]="cat.type">{{ cat.type === 'income' ? 'Revenu' : 'Dépense' }}</div>
+      </div>
+      <div class="actions">
+        <button mat-icon-button (click)="openForm(cat)"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button color="warn" (click)="deleteCategory(cat.id)"><mat-icon>delete</mat-icon></button>
+      </div>
+    </div>
+  </div>
+</div>

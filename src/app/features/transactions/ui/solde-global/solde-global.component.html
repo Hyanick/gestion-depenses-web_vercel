@@ -1,0 +1,3 @@
+<div class="solde-global" [ngClass]="{ positif: solde() >= 0, negatif: solde() < 0 }">
+  Solde du mois : <strong>{{ solde() | currency:'EUR':'symbol':'1.2-2'  }}</strong>
+</div>
