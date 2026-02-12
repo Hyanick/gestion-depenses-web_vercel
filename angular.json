@@ -43,7 +43,6 @@
           "configurations": {
             "production": {
               "optimization": true,
-              "buildOptimizer": true,
               "vendorChunk": false,
               "extractLicenses": true,
               "sourceMap": false,
