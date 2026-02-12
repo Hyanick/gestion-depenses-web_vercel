@@ -1,52 +1,53 @@
 {
-"name": "gestion-depenses-web-v1",
-"version": "0.0.0",
-"private": true,
-"engines": {
-"node": "20.x"
-},
-"scripts": {
-"start": "ng serve",
-"build": "ng build --configuration production",
-"watch": "ng build --watch --configuration development",
-"test": "ng test"
-},
-"dependencies": {
-"@angular/animations": "^19.1.0",
-"@angular/cdk": "^19.2.19",
-"@angular/common": "^19.1.0",
-"@angular/compiler": "^19.1.0",
-"@angular/core": "^19.1.0",
-"@angular/forms": "^19.1.0",
-"@angular/material": "^19.2.19",
-"@angular/platform-browser": "^19.1.0",
-"@angular/platform-browser-dynamic": "^19.1.0",
-"@angular/router": "^19.1.0",
-"@ngxs/devtools-plugin": "^19.0.0",
-"@ngxs/form-plugin": "19.0.0",
-"@ngxs/hmr-plugin": "19.0.0",
-"@ngxs/logger-plugin": "^19.0.0",
-"@ngxs/router-plugin": "19.0.0",
-"@ngxs/storage-plugin": "19.0.0",
-"@ngxs/store": "^19.0.0",
-"@ngxs/websocket-plugin": "19.0.0",
-"@popperjs/core": "^2.11.8",
-"bootstrap": "^5.3.8",
-"rxjs": "~7.8.0",
-"tslib": "^2.3.0",
-"zone.js": "~0.15.0"
-},
-"devDependencies": {
-"@angular-devkit/build-angular": "^19.1.2",
-"@angular/cli": "^19.1.2",
-"@angular/compiler-cli": "^19.1.0",
-"@types/jasmine": "~5.1.0",
-"jasmine-core": "~5.5.0",
-"karma": "~6.4.0",
-"karma-chrome-launcher": "~3.2.0",
-"karma-coverage": "~2.2.0",
-"karma-jasmine": "~5.1.0",
-"karma-jasmine-html-reporter": "~2.1.0",
-"typescript": "~5.7.2"
-}
+  "name": "gestion-depenses-web-v1",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": "20.x"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "start": "ng serve",
+    "build": "npx ng build --configuration production",
+    "watch": "npx ng build --watch --configuration development",
+    "test": "npx ng test"
+  },
+  "dependencies": {
+    "@angular/animations": "^19.1.0",
+    "@angular/cdk": "^19.2.19",
+    "@angular/common": "^19.1.0",
+    "@angular/compiler": "^19.1.0",
+    "@angular/core": "^19.1.0",
+    "@angular/forms": "^19.1.0",
+    "@angular/material": "^19.2.19",
+    "@angular/platform-browser": "^19.1.0",
+    "@angular/platform-browser-dynamic": "^19.1.0",
+    "@angular/router": "^19.1.0",
+    "@ngxs/devtools-plugin": "^19.0.0",
+    "@ngxs/form-plugin": "19.0.0",
+    "@ngxs/hmr-plugin": "19.0.0",
+    "@ngxs/logger-plugin": "^19.0.0",
+    "@ngxs/router-plugin": "19.0.0",
+    "@ngxs/storage-plugin": "19.0.0",
+    "@ngxs/store": "^19.0.0",
+    "@ngxs/websocket-plugin": "19.0.0",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.8",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.1.2",
+    "@angular/cli": "^19.1.2",
+    "@angular/compiler-cli": "^19.1.0",
+    "@types/jasmine": "~5.1.0",
+    "jasmine-core": "~5.5.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "typescript": "~5.7.2"
+  }
 }
