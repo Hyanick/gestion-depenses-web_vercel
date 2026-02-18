@@ -1,0 +1,100 @@
+<div class="home container">
+
+    <!-- Month selector -->
+    <div class="month-selector card">
+        <button mat-icon-button>
+            <mat-icon>chevron_left</mat-icon>
+        </button>
+
+        <div class="month">
+            février 2026
+            <mat-icon class="caret">expand_more</mat-icon>
+        </div>
+
+        <button mat-icon-button>
+            <mat-icon>chevron_right</mat-icon>
+        </button>
+    </div>
+
+    <!-- Balance hero -->
+    <div class="balance-hero">
+        <div class="hero-left">
+            <div class="label">Solde du mois</div>
+            <div class="balance negative">-82,00 €</div>
+            <div class="hint">Revenus 8 725 € • Dépenses 8 807 €</div>
+        </div>
+
+        <button mat-fab class="add-btn" (click)="openAdd()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+
+    <!-- Quick stats -->
+    <div class="kpis">
+        <div class="card kpi">
+            <div class="kpi-label">Revenus</div>
+            <div class="kpi-value positive">8 725 €</div>
+        </div>
+
+        <div class="card kpi">
+            <div class="kpi-label">Dépenses</div>
+            <div class="kpi-value negative">8 807 €</div>
+        </div>
+
+        <div class="card kpi">
+            <div class="kpi-label">Transactions</div>
+            <div class="kpi-value">42</div>
+        </div>
+    </div>
+
+    <!-- Last transactions -->
+    <div class="card section">
+        <div class="section-head">
+            <h3>Dernières transactions</h3>
+            <a class="link" routerLink="/transactions">Voir tout</a>
+        </div>
+
+        <div class="tx-row">
+            <div class="tx-left">
+                <div class="tx-icon income">
+                    <mat-icon>payments</mat-icon>
+                </div>
+                <div class="tx-meta">
+                    <div class="tx-title">Salaire</div>
+                    <div class="muted small">12 fév • Revenus</div>
+                </div>
+            </div>
+
+            <div class="tx-amount income">+3 775 €</div>
+        </div>
+
+        <div class="tx-row">
+            <div class="tx-left">
+                <div class="tx-icon expense">
+                    <mat-icon>home</mat-icon>
+                </div>
+                <div class="tx-meta">
+                    <div class="tx-title">Appartement</div>
+                    <div class="muted small">10 fév • Logement</div>
+                </div>
+            </div>
+
+            <div class="tx-amount expense">-1 270 €</div>
+        </div>
+
+        <div class="tx-row">
+            <div class="tx-left">
+                <div class="tx-icon expense">
+                    <mat-icon>shopping_cart</mat-icon>
+                </div>
+                <div class="tx-meta">
+                    <div class="tx-title">Courses</div>
+                    <div class="muted small">09 fév • Alimentation</div>
+                </div>
+            </div>
+
+            <div class="tx-amount expense">-82 €</div>
+        </div>
+    </div>
+
+</div>

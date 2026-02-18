@@ -1,0 +1,45 @@
+<div class="app-shell">
+
+    <!-- HEADER -->
+    <header class="top-header">
+        <div class="title">GDM</div>
+
+        <div class="actions">
+            <mat-icon>notifications</mat-icon>
+            <mat-icon>person</mat-icon>
+        </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="content">
+        <router-outlet></router-outlet>
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+        <a routerLink="/home" routerLinkActive="active">
+            <mat-icon>home</mat-icon>
+            <span>Prévisionnel</span>
+        </a>
+        <!-- <a routerLink="/home" routerLinkActive="active">
+            <mat-icon>home</mat-icon>
+            <span>Accueil</span>
+        </a> -->
+
+        <a routerLink="/analysis" routerLinkActive="active">
+            <mat-icon>analytics</mat-icon>
+            <span>Analyse</span>
+        </a>
+
+        <a routerLink="/transactions" routerLinkActive="active">
+            <mat-icon>payments</mat-icon>
+            <span>Transactions</span>
+        </a>
+
+        <a routerLink="/settings" routerLinkActive="active">
+            <mat-icon>settings</mat-icon>
+            <span>Paramètres</span>
+        </a>
+    </nav>
+
+</div>

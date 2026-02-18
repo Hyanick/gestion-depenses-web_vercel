@@ -1,0 +1,103 @@
+<div class="analysis container">
+
+    <!-- Month selector -->
+    <div class="month-selector card">
+        <button mat-icon-button (click)="prevMonth()">
+            <mat-icon>chevron_left</mat-icon>
+        </button>
+
+        <div class="month">{{ monthLabel }}</div>
+
+        <button mat-icon-button (click)="nextMonth()">
+            <mat-icon>chevron_right</mat-icon>
+        </button>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpis">
+        <div class="card kpi">
+            <div class="kpi-label">Revenus</div>
+            <div class="kpi-value positive">{{ totalIncome | number }} €</div>
+        </div>
+
+        <div class="card kpi">
+            <div class="kpi-label">Dépenses</div>
+            <div class="kpi-value negative">{{ totalExpenses | number }} €</div>
+        </div>
+
+        <div class="card kpi">
+            <div class="kpi-label">Net</div>
+            <div class="kpi-value" [class.negative]="net < 0" [class.positive]="net >= 0">
+                {{ net | number }} €
+            </div>
+        </div>
+    </div>
+
+    <!-- Donut + legend -->
+    <div class="card section">
+        <div class="section-head">
+            <h3>Dépenses par catégorie</h3>
+            <span class="muted">Ce mois</span>
+        </div>
+
+        <div class="donut-row">
+            <div class="donut-wrap">
+                <div class="donut" [attr.style]="donutStyle"></div>
+                <div class="donut-center">
+                    <div class="donut-label">Total</div>
+                    <div class="donut-value">{{ totalExpenses | number }} €</div>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item" *ngFor="let c of categories">
+                    <span class="dot" [style.background]="c.color"></span>
+                    <span class="name">{{ c.name }}</span>
+                    <span class="pct">{{ c.percent }}%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category list -->
+    <div class="card section">
+        <div class="section-head">
+            <h3>Détail</h3>
+            <span class="muted">Top postes</span>
+        </div>
+
+        <div class="cat" *ngFor="let c of categories">
+            <div class="cat-left">
+                <div class="cat-icon" [style.background]="c.color + '22'">
+                    <mat-icon [style.color]="c.color">{{ c.icon }}</mat-icon>
+                </div>
+
+                <div class="cat-meta">
+                    <div class="cat-name">{{ c.name }}</div>
+                    <div class="cat-sub muted">{{ c.amount | number }} € • {{ c.percent }}%</div>
+                </div>
+            </div>
+
+            <div class="cat-bar">
+                <div class="fill" [style.width.%]="c.percent" [style.background]="c.color"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trend -->
+    <div class="card section">
+        <div class="section-head">
+            <h3>Tendance</h3>
+            <span class="muted">6 derniers mois</span>
+        </div>
+
+        <div class="trend">
+            <div class="bar" *ngFor="let t of trend">
+                <div class="bar-fill" [style.height.%]="(t.expenses / maxTrend) * 100"
+                    title="{{ t.expenses | number }} €"></div>
+                <div class="bar-label">{{ t.label }}</div>
+            </div>
+        </div>
+    </div>
+
+</div>

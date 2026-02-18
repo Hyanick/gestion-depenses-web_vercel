@@ -1,0 +1,89 @@
+<div class="tx container">
+
+  <!-- Header -->
+  <div class="head card">
+    <div>
+      <div class="title">Transactions</div>
+      <div class="subtitle muted">Total affiché</div>
+    </div>
+
+    <div class="total" [class.negative]="totalShown < 0" [class.positive]="totalShown >= 0">
+      {{ totalShown | number:'1.0-2' }} €
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs card">
+    <button type="button" class="tab" [class.active]="tab==='all'" (click)="setTab('all')">
+      Tout
+    </button>
+    <button type="button" class="tab" [class.active]="tab==='expense'" (click)="setTab('expense')">
+      Dépenses
+    </button>
+    <button type="button" class="tab" [class.active]="tab==='income'" (click)="setTab('income')">
+      Revenus
+    </button>
+  </div>
+
+  <!-- Search -->
+  <div class="search card">
+    <mat-icon>search</mat-icon>
+    <input [(ngModel)]="query" placeholder="Rechercher (libellé, catégorie)..." />
+    <button *ngIf="query" class="clear" (click)="query=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Category chips -->
+  <div class="chips">
+    <button
+      type="button"
+      class="chip"
+      *ngFor="let c of categories"
+      [class.active]="category===c"
+      (click)="setCategory(c)"
+    >
+      {{ c }}
+    </button>
+  </div>
+
+  <!-- List -->
+  <div class="card list">
+    <div class="empty" *ngIf="filtered.length === 0">
+      <div class="empty-icon">
+        <mat-icon>receipt_long</mat-icon>
+      </div>
+      <div class="empty-title">Aucune transaction</div>
+      <div class="muted">Essaie de modifier tes filtres.</div>
+    </div>
+
+    <div class="row" *ngFor="let t of filtered" (click)="editTransaction(t)">
+      <div class="left">
+        <div class="icon" [class.income]="t.type==='income'" [class.expense]="t.type==='expense'">
+          <mat-icon>{{ t.icon }}</mat-icon>
+        </div>
+
+        <div class="meta">
+          <div class="name">{{ t.title }}</div>
+          <div class="muted small">{{ t.category }} • {{ t.date }}</div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="amount" [class.income]="t.type==='income'" [class.expense]="t.type==='expense'">
+          {{ t.type==='expense' ? '-' : '+' }}{{ t.amount | number:'1.0-2' }} €
+        </div>
+
+        <button class="more" mat-icon-button (click)="$event.stopPropagation(); deleteTransaction(t)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAB -->
+  <button class="fab" mat-fab (click)="addTransaction()">
+    <mat-icon>add</mat-icon>
+  </button>
+
+</div>

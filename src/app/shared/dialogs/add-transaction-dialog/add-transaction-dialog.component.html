@@ -1,0 +1,81 @@
+<div class="sheet">
+
+    <div class="topbar">
+        <button mat-icon-button class="icon-btn" (click)="close()">
+            <mat-icon>close</mat-icon>
+        </button>
+
+        <div class="title">{{ isEdit ? 'Modifier' : 'Ajouter' }}</div>
+
+        <button mat-button class="save-btn" (click)="submit()">
+            {{ isEdit ? 'Mettre à jour' : 'Enregistrer' }}
+        </button>
+    </div>
+
+    <div class="content" [formGroup]="form">
+
+        <!-- Type switch -->
+        <div class="type-switch card">
+            <button type="button" class="pill" [class.active]="form.value.type==='expense'"
+                (click)="form.controls.type.setValue('expense')">
+                Dépense
+            </button>
+
+            <button type="button" class="pill" [class.active]="form.value.type==='income'"
+                (click)="form.controls.type.setValue('income')">
+                Revenu
+            </button>
+        </div>
+
+        <!-- Amount -->
+        <div class="card block">
+            <div class="label">Montant</div>
+            <div class="amount-row">
+                <input class="amount" type="number" inputmode="decimal" placeholder="0.00" formControlName="amount" />
+                <div class="currency">€</div>
+            </div>
+
+            <div class="error" *ngIf="form.controls.amount.touched && form.controls.amount.invalid">
+                <span *ngIf="form.controls.amount.errors?.['required']">Montant requis.</span>
+                <span *ngIf="form.controls.amount.errors?.['min']">Minimum 0,01 €.</span>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <div class="card block">
+            <div class="label">Libellé</div>
+            <input class="input" placeholder="Ex: Courses, Salaire..." formControlName="title" />
+
+            <div class="error" *ngIf="form.controls.title.touched && form.controls.title.invalid">
+                <span *ngIf="form.controls.title.errors?.['required']">Libellé requis.</span>
+                <span *ngIf="form.controls.title.errors?.['maxlength']">Max 40 caractères.</span>
+            </div>
+        </div>
+
+        <!-- Category + Date -->
+        <div class="grid">
+            <div class="card block">
+                <div class="label">Catégorie</div>
+                <select class="select" formControlName="category">
+                    <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+                </select>
+            </div>
+
+            <div class="card block">
+                <div class="label">Date</div>
+                <input class="input" type="date" formControlName="date" />
+            </div>
+        </div>
+
+        <!-- Note -->
+        <div class="card block">
+            <div class="label">Note (optionnel)</div>
+            <textarea class="textarea" rows="3" placeholder="Ajouter un détail..." formControlName="note"></textarea>
+
+            <div class="error" *ngIf="form.controls.note.touched && form.controls.note.invalid">
+                <span *ngIf="form.controls.note.errors?.['maxlength']">Max 120 caractères.</span>
+            </div>
+        </div>
+
+    </div>
+</div>
