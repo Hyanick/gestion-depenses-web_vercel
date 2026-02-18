@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom, LOCALE_ID, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, LOCALE_ID, provideZoneChangeDetection, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { provideHttpClient } from '@angular/common/http';
@@ -13,6 +13,7 @@ import { withNgxsWebSocketPlugin } from '@ngxs/websocket-plugin';
 import { routes } from './app.routes';
 import { CategoriesState } from './features/categories/data-access/categories.state';
 import { TransactionsState } from './features/transactions/data-access/transactions.state';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
@@ -41,6 +42,9 @@ export const appConfig: ApplicationConfig = {
       keys: '*',
       storage: 1, // ✅ utilisation correcte de l'enum,
     })
-  ),
+  ), provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          }),
   ]
 };
