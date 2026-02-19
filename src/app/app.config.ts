@@ -14,6 +14,7 @@ import { routes } from './app.routes';
 import { CategoriesState } from './features/categories/data-access/categories.state';
 import { TransactionsState } from './features/transactions/data-access/transactions.state';
 import { provideServiceWorker } from '@angular/service-worker';
+import { BudgetState } from './core/budget/budget.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
@@ -22,7 +23,7 @@ export const appConfig: ApplicationConfig = {
   provideHttpClient(),
     provideAnimations(),
   provideStore(
-    [TransactionsState, CategoriesState],
+    [TransactionsState, CategoriesState, BudgetState],
     withNgxsReduxDevtoolsPlugin(),
     withNgxsFormPlugin(),
     withNgxsLoggerPlugin(),

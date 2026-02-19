@@ -33,7 +33,9 @@ export const routes: Routes = [
                 path: 'settings',
                 loadComponent: () =>
                     import('./pages/settings/settings.component').then(m => m.SettingsComponent)
-            }
+            },
+            { path: 'template', loadComponent: () => import('./pages/template/template.component').then(m => m.TemplateComponent) },
+
         ]
     }
 ];

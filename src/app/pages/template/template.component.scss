@@ -1,0 +1,172 @@
+.tpl {
+    padding-bottom: 90px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, .06);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .05);
+}
+
+.muted {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.small {
+    font-size: 12px;
+}
+
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    margin-bottom: 14px;
+}
+
+.h-title {
+    font-weight: 1000;
+    color: #111827;
+    font-size: 16px;
+}
+
+.hero-ic {
+    color: #3aa0d8;
+    opacity: .9;
+}
+
+.section {
+    padding: 16px;
+    margin-bottom: 14px;
+}
+
+.section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.title {
+    font-weight: 1000;
+    color: #111827;
+    font-size: 14px;
+}
+
+.mini {
+    border-radius: 14px !important;
+    font-weight: 900 !important;
+    white-space: nowrap;
+}
+
+/* list iOS */
+.card-inner {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, .06);
+    border-radius: 18px;
+    box-shadow: none;
+}
+
+.list {
+    padding: 6px 14px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ios-row {
+    padding: 14px 0;
+    border-top: 1px solid rgba(17, 24, 39, .06);
+}
+
+.ios-row:first-of-type {
+    border-top: none;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+}
+
+.squircle {
+    width: 44px;
+    height: 44px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.top-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.cat {
+    font-weight: 1000;
+    color: #111827;
+}
+
+.value {
+    font-weight: 1000;
+    color: #111827;
+    white-space: nowrap;
+    cursor: text;
+}
+
+.amount-input {
+    width: 90px;
+    border: none;
+    outline: none;
+    background: transparent;
+    text-align: right;
+    font-weight: 1000;
+    font-size: 14px;
+    border-bottom: 2px solid rgba(58, 160, 216, .35);
+    padding: 4px 0;
+}
+
+.inline {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.kebab mat-icon {
+    color: #9ca3af;
+}
+
+::ng-deep .mat-mdc-menu-panel {
+    border-radius: 16px;
+}
+
+.pad {
+    padding: 10px 0;
+}
+
+.error {
+    color: #ef4444;
+    font-weight: 800;
+}

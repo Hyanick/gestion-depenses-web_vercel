@@ -103,3 +103,56 @@
     }
   }
 }
+
+.ios-dialog .mat-mdc-dialog-container {
+  border-radius: 22px !important;
+}
+
+/* ===== iOS Sheet full-screen (mobile) ===== */
+.ios-sheet-full .mat-mdc-dialog-container {
+  border-radius: 22px 22px 0 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.ios-sheet-full .mdc-dialog__surface {
+  border-radius: 22px 22px 0 0 !important;
+  animation: iosSheetUp 180ms ease-out;
+}
+
+@keyframes iosSheetUp {
+  from {
+    transform: translateY(14px);
+    opacity: 0.92;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ===== Right Drawer (desktop) ===== */
+.ios-drawer-right .mat-mdc-dialog-container {
+  border-radius: 22px 0 0 22px !important;
+  padding: 0 !important;
+  height: 100%;
+}
+
+.ios-drawer-right .mdc-dialog__surface {
+  border-radius: 22px 0 0 22px !important;
+  height: 100%;
+  animation: iosDrawerIn 180ms ease-out;
+}
+
+@keyframes iosDrawerIn {
+  from {
+    transform: translateX(14px);
+    opacity: 0.92;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

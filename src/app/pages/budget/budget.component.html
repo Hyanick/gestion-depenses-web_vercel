@@ -1,137 +1,148 @@
 <div class="budget container">
 
-    <!-- Solde -->
-    <div class="balance-hero">
-        <div>
-            <div class="label">Solde du mois</div>
-            <div class="balance" [class.negative]="balance < 0" [class.positive]="balance >= 0">
-                {{ balance | number:'1.0-2' }} €
-            </div>
+    <div class="month-nav card">
+        <button mat-icon-button (click)="prevMonth()">
+            <mat-icon>chevron_left</mat-icon>
+        </button>
+
+        <div class="month-title">
+            <div class="month">{{ monthLabel() }}</div>
+            <div class="muted small">Prévisionnel • {{ vm.createdFrom() }}</div>
+            <!-- <div class="muted small">
+                Prévisionnel • {{ vm.createdFrom() }}
+                @if (vm.saving()) {
+                <span class="saving-pill">• Enregistrement…</span>
+                } @else if (vm.dirty()) {
+                <span class="saving-pill">• Modifié</span>
+                }
+            </div> -->
         </div>
 
-        <!-- Bouton + (pour l’instant ajoute une dépense mock) -->
-        <button mat-fab class="fab" (click)="openAddExpense()"> 
-            <mat-icon>add</mat-icon>
+        <button mat-icon-button (click)="nextMonth()">
+            <mat-icon>chevron_right</mat-icon>
         </button>
     </div>
 
-    <!-- REVENUS ------->
+    @if (vm.error()) {
+    <div class="card section error">{{ vm.error() }}</div>
+    }
+
+    <div class="balance-hero">
+        <div>
+            <div class="label">Solde prévisionnel</div>
+            <div class="balance" [class.negative]="vm.balance() < 0" [class.positive]="vm.balance() >= 0">
+                {{ vm.balance() | number:'1.0-2' }} €
+            </div>
+            <div class="hint">
+                Revenus {{ vm.totalIncome() | number:'1.0-2' }} € • Dépenses {{ vm.totalExpense() | number:'1.0-2' }} €
+            </div>
+        </div>
+        <button mat-icon-button class="add-in-card" (click)="openAddDialog()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+    <!-- bouton flottant iOS (mobile) -->
+    <button mat-fab class="fab-ios" (click)="openAddDialog()">
+        <mat-icon>add</mat-icon>
+    </button>
+
+    <!-- <div class="tools card">
+    <button mat-stroked-button class="tool" (click)="duplicateFromPrevious()" [disabled]="vm.loading()">
+      <mat-icon>content_copy</mat-icon>
+      Dupliquer mois précédent
+    </button>
+
+    <button mat-stroked-button class="tool" (click)="regenerateFromTemplate()" [disabled]="vm.loading()">
+      <mat-icon>autorenew</mat-icon>
+      Régénérer depuis modèle
+    </button>
+  </div> -->
+
+    <!-- Revenus -->
     <div class="card section">
         <div class="section-head">
             <div>
-                <div class="title">Total revenus du mois :</div>
-                <div class="total positive">{{ totalIncome | number:'1.0-2' }} €</div>
+                <div class="title">Revenus</div>
+                <div class="total positive">{{ vm.totalIncome() | number:'1.0-2' }} €</div>
             </div>
-<!-- 
-            <button mat-stroked-button class="mini" (click)="addIncome()">
-                <mat-icon>add</mat-icon>
-                Revenu
-            </button> -->
         </div>
 
         <div class="list card-inner">
-            <div class="row ios-row" *ngFor="let it of incomes">
+            @if (vm.loading()) {
+            <div class="muted small pad">Chargement...</div>
+            } @else {
+            @for (it of vm.incomes(); track it.id) {
+            <div class="row ios-row">
                 <div class="left">
                     <div class="squircle" [style.background]="it.color + '18'">
                         <mat-icon [style.color]="it.color">{{ it.icon }}</mat-icon>
                     </div>
 
                     <div class="meta">
-                        <div class="cat">{{ it.category }}</div>
+                        <div class="top-line">
+                            <span class="cat">{{ it.category }}</span>
+
+                            <span class="value" (click)="startEdit(it.id)">
+                                @if (editingId() !== it.id) {
+                                {{ it.amount | number:'1.0-2' }} €
+                                } @else {
+                                <input class="amount-input" type="number" [ngModel]="it.amount"
+                                    (ngModelChange)="onAmountChange(it.id, $event)" (blur)="flushNow()"
+                                    (keydown.enter)="flushNow()" autofocus />
+                                }
+                            </span>
+                        </div>
+
                         <div class="desc muted">{{ it.label }}</div>
                     </div>
                 </div>
-
-                <div class="right">
-                    <div class="amount" (click)="startEdit(it.id)">
-                        <ng-container *ngIf="editingId !== it.id; else editIncome">
-                            <span class="value">{{ it.amount | number:'1.0-2' }} €</span>
-                        </ng-container>
-
-                        <ng-template #editIncome>
-                            <input class="amount-input" type="number" [(ngModel)]="it.amount" (blur)="stopEdit()"
-                                (keydown.enter)="stopEdit()" autofocus />
-                            <span class="eur">€</span>
-                        </ng-template>
-                    </div>
-
-                    <button mat-icon-button class="kebab" [matMenuTriggerFor]="menuIncome"
-                        (click)="$event.stopPropagation()">
-                        <mat-icon>more_horiz</mat-icon>
-                    </button>
-
-                    <mat-menu #menuIncome="matMenu">
-                        <button mat-menu-item (click)="startEdit(it.id)">
-                            <mat-icon>edit</mat-icon>
-                            <span>Modifier</span>
-                        </button>
-                        <button mat-menu-item (click)="remove(it.id)">
-                            <mat-icon>delete</mat-icon>
-                            <span>Supprimer</span>
-                        </button>
-                    </mat-menu>
-                </div>
             </div>
+            }
+            }
         </div>
     </div>
 
-    <!-- DEPENSES -->
+    <!-- Dépenses -->
     <div class="card section">
         <div class="section-head">
             <div>
-                <div class="title">Total des dépenses du mois :</div>
-                <div class="total negative">{{ totalExpense | number:'1.0-2' }} €</div>
+                <div class="title">Dépenses</div>
+                <div class="total negative">{{ vm.totalExpense() | number:'1.0-2' }} €</div>
             </div>
-
-            <!-- <button mat-stroked-button class="mini" (click)="addExpense()">
-                <mat-icon>add</mat-icon>
-                Dépense
-            </button> -->
         </div>
 
         <div class="list card-inner">
-            <div class="row ios-row" *ngFor="let it of expenses">
+            @if (vm.loading()) {
+            <div class="muted small pad">Chargement...</div>
+            } @else {
+            @for (it of vm.expenses(); track it.id) {
+            <div class="row ios-row">
                 <div class="left">
                     <div class="squircle" [style.background]="it.color + '18'">
                         <mat-icon [style.color]="it.color">{{ it.icon }}</mat-icon>
                     </div>
 
                     <div class="meta">
-                        <div class="cat">{{ it.category }}</div>
+                        <div class="top-line">
+                            <span class="cat">{{ it.category }}</span>
+
+                            <span class="value" (click)="startEdit(it.id)">
+                                @if (editingId() !== it.id) {
+                                {{ it.amount | number:'1.0-2' }} €
+                                } @else {
+                                <input class="amount-input" type="number" [ngModel]="it.amount"
+                                    (ngModelChange)="onAmountChange(it.id, $event)" (blur)="flushNow()"
+                                    (keydown.enter)="flushNow()" autofocus />
+                                }
+                            </span>
+                        </div>
+
                         <div class="desc muted">{{ it.label }}</div>
                     </div>
                 </div>
-
-                <div class="right">
-                    <div class="amount" (click)="startEdit(it.id)">
-                        <ng-container *ngIf="editingId !== it.id; else editExpense">
-                            <span class="value">{{ it.amount | number:'1.0-2' }} €</span>
-                        </ng-container>
-
-                        <ng-template #editExpense>
-                            <input class="amount-input" type="number" [(ngModel)]="it.amount" (blur)="stopEdit()"
-                                (keydown.enter)="stopEdit()" autofocus />
-                            <span class="eur">€</span>
-                        </ng-template>
-                    </div>
-
-                    <button mat-icon-button class="kebab" [matMenuTriggerFor]="menuExpense"
-                        (click)="$event.stopPropagation()">
-                        <mat-icon>more_horiz</mat-icon>
-                    </button>
-
-                    <mat-menu #menuExpense="matMenu">
-                        <button mat-menu-item (click)="startEdit(it.id)">
-                            <mat-icon>edit</mat-icon>
-                            <span>Modifier</span>
-                        </button>
-                        <button mat-menu-item (click)="remove(it.id)">
-                            <mat-icon>delete</mat-icon>
-                            <span>Supprimer</span>
-                        </button>
-                    </mat-menu>
-                </div>
             </div>
+            }
+            }
         </div>
     </div>
 

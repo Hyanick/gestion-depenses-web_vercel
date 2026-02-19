@@ -102,6 +102,8 @@
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
+
+
         </div>
     </div>
 
@@ -111,6 +113,18 @@
             <h3>Données</h3>
             <span class="muted">Sauvegarde</span>
         </div>
+        <button class="action" routerLink="/template">
+            <div class="left">
+                <div class="icon soft">
+                    <mat-icon>content_copy</mat-icon>
+                </div>
+                <div class="meta">
+                    <div class="name">Modèle récurrent</div>
+                    <div class="muted small">Revenus & dépenses fixes</div>
+                </div>
+            </div>
+            <mat-icon class="chev">chevron_right</mat-icon>
+        </button>
 
         <button class="action" (click)="exportCsv()">
             <div class="left">
@@ -151,5 +165,7 @@
             <div class="name">1.0.0</div>
         </div>
     </div>
+
+
 
 </div>

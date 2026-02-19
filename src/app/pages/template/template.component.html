@@ -1,0 +1,139 @@
+<div class="tpl container">
+
+    <div class="hero card">
+        <div>
+            <div class="h-title">Modèle récurrent</div>
+            <div class="muted">Revenus & dépenses fixes copiés automatiquement</div>
+        </div>
+        <mat-icon class="hero-ic">content_copy</mat-icon>
+    </div>
+
+    @if (vm.error()) {
+    <div class="card section error">
+        {{ vm.error() }}
+    </div>
+    }
+
+    <!-- REVENUS -->
+    <div class="card section">
+        <div class="section-head">
+            <div>
+                <div class="title">Revenus</div>
+                <div class="muted small">Fixes / prévisionnels</div>
+            </div>
+
+            <button mat-stroked-button class="mini" (click)="addLine('income')" [disabled]="vm.loading()">
+                <mat-icon>add</mat-icon>
+                Ajouter
+            </button>
+        </div>
+
+        <div class="list card-inner">
+            @if (vm.loading()) {
+            <div class="muted small pad">Chargement...</div>
+            } @else {
+            @for (it of vm.incomes(); track it.id) {
+            <div class="row ios-row">
+                <div class="left">
+                    <div class="squircle" [style.background]="it.color + '18'">
+                        <mat-icon [style.color]="it.color">{{ it.icon }}</mat-icon>
+                    </div>
+
+                    <div class="meta">
+                        <div class="top-line">
+                            <span class="cat">{{ it.category }}</span>
+
+                            <span class="value" (click)="startEdit(it.id)">
+                                @if (editingId() !== it.id) {
+                                {{ it.amount | number:'1.0-2' }} €
+                                } @else {
+                                <input class="amount-input" type="number" [(ngModel)]="it.amount"
+                                    (blur)="stopEdit(vm.lines())" (keydown.enter)="stopEdit(vm.lines())" autofocus />
+                                }
+                            </span>
+                        </div>
+
+                        <div class="desc muted">
+                            <input class="inline" [(ngModel)]="it.label" (blur)="stopEdit(vm.lines())"
+                                placeholder="Libellé..." />
+                        </div>
+                    </div>
+                </div>
+
+                <button mat-icon-button class="kebab" [matMenuTriggerFor]="menuIncome">
+                    <mat-icon>more_horiz</mat-icon>
+                </button>
+
+                <mat-menu #menuIncome="matMenu">
+                    <button mat-menu-item (click)="removeLine(it.id)">
+                        <mat-icon>delete</mat-icon><span>Supprimer</span>
+                    </button>
+                </mat-menu>
+            </div>
+            }
+            }
+        </div>
+    </div>
+
+    <!-- DEPENSES -->
+    <div class="card section">
+        <div class="section-head">
+            <div>
+                <div class="title">Dépenses</div>
+                <div class="muted small">Fixes / prévisionnelles</div>
+            </div>
+
+            <button mat-stroked-button class="mini" (click)="addLine('expense')" [disabled]="vm.loading()">
+                <mat-icon>add</mat-icon>
+                Ajouter
+            </button>
+        </div>
+
+        <div class="list card-inner">
+            @if (vm.loading()) {
+            <div class="muted small pad">Chargement...</div>
+            } @else {
+            @for (it of vm.expenses(); track it.id) {
+            <div class="row ios-row">
+                <div class="left">
+                    <div class="squircle" [style.background]="it.color + '18'">
+                        <mat-icon [style.color]="it.color">{{ it.icon }}</mat-icon>
+                    </div>
+
+                    <div class="meta">
+                        <div class="top-line">
+                            <span class="cat">{{ it.category }}</span>
+
+                            <span class="value" (click)="startEdit(it.id)">
+                                @if (editingId() !== it.id) {
+                                {{ it.amount | number:'1.0-2' }} €
+                                } @else {
+                                <input class="amount-input" type="number" [(ngModel)]="it.amount"
+                                    (blur)="stopEdit(vm.lines())" (keydown.enter)="stopEdit(vm.lines())" autofocus />
+                                }
+                            </span>
+                        </div>
+
+                        <div class="desc muted">
+                            <input class="inline" [(ngModel)]="it.label" (blur)="stopEdit(vm.lines())"
+                                placeholder="Libellé..." />
+                        </div>
+                    </div>
+                </div>
+
+                <button mat-icon-button class="kebab" [matMenuTriggerFor]="menuExpense">
+                    <mat-icon>more_horiz</mat-icon>
+                </button>
+
+                <mat-menu #menuExpense="matMenu">
+                    <button mat-menu-item (click)="removeLine(it.id)">
+                        <mat-icon>delete</mat-icon><span>Supprimer</span>
+                    </button>
+                </mat-menu>
+            </div>
+            }
+            }
+        </div>
+    </div>
+
+</div>

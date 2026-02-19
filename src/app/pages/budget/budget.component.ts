@@ -1,20 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, computed, effect, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-import { UiDialogService } from '../../core/ui/ui-dialog.service';
+import { BudgetProvider } from '../../core/budget/budget.provider';
+import { MatDialog } from '@angular/material/dialog';
+import { AddLineDialogComponent, AddLineDialogResult } from './add-line-dialog.component';
 
-type BudgetItem = {
-  id: string;
-  type: 'income' | 'expense';
-  category: string;
-  label: string;
-  amount: number;
-  icon: string;
-  color: string;
-};
 
 @Component({
   selector: 'app-budget',
@@ -24,62 +17,116 @@ type BudgetItem = {
   styleUrls: ['./budget.component.scss'],
 })
 export class BudgetComponent {
-  private readonly uiDialog = inject(UiDialogService);
-  monthLabel = 'février 2026';
+  constructor(public vm: BudgetProvider, private dialog: MatDialog) {
+    effect(() => {
+      const key = this.monthKey();
+      // flush du précédent mois si dirty (si existait)
+      const prev = this.lastMonthKey();
+      if (prev && prev !== key) this.vm.flush(prev);
 
-  items: BudgetItem[] = [
-    { id: 'i1', type: 'income', category: 'Salaire', label: 'Salaire Annie', amount: 3775, icon: 'work', color: '#3aa0d8' },
-    { id: 'i2', type: 'income', category: 'CAF', label: 'CAF enfants', amount: 150, icon: 'emoji_events', color: '#22c55e' },
-    { id: 'i3', type: 'income', category: 'Salaire', label: 'Salaire Yanick', amount: 3700, icon: 'work', color: '#3aa0d8' },
-
-    { id: 'e1', type: 'expense', category: 'Logement', label: 'Appartement (charges+taxes...)', amount: 1270, icon: 'home', color: '#f59e0b' },
-    { id: 'e2', type: 'expense', category: 'Maison', label: 'Maison (charges+imprévus)', amount: 2440, icon: 'cottage', color: '#8b5cf6' },
-    { id: 'e3', type: 'expense', category: 'Éducation', label: 'Écoles enfants', amount: 800, icon: 'school', color: '#eab308' },
-    { id: 'e4', type: 'expense', category: 'Alimentation', label: 'Ration', amount: 350, icon: 'restaurant', color: '#22c55e' },
-  ];
-
-  editingId: string | null = null;
-
-  get incomes() { return this.items.filter(x => x.type === 'income'); }
-  get expenses() { return this.items.filter(x => x.type === 'expense'); }
-
-  get totalIncome() { return this.incomes.reduce((s, x) => s + (Number(x.amount) || 0), 0); }
-  get totalExpense() { return this.expenses.reduce((s, x) => s + (Number(x.amount) || 0), 0); }
-  get balance() { return this.totalIncome - this.totalExpense; }
-
-  startEdit(id: string) { this.editingId = id; }
-  stopEdit() { this.editingId = null; }
-
-  addIncome() {
-    const id = crypto.randomUUID();
-    this.items = [
-      { id, type: 'income', category: 'Revenu', label: 'Nouveau revenu', amount: 0, icon: 'payments', color: '#3aa0d8' },
-      ...this.items
-    ];
-    this.editingId = id;
+      this.vm.setCurrentMonth(key);
+      this.vm.load(key);
+      this.editingId.set(null);
+      this.lastMonthKey.set(key);
+    });
   }
 
-  addExpense() {
-    const id = crypto.randomUUID();
-    this.items = [
-      ...this.items,
-      { id, type: 'expense', category: 'Dépense', label: 'Nouvelle dépense', amount: 0, icon: 'receipt_long', color: '#ef4444' }
-    ];
-    this.editingId = id;
+  private currentDate = signal(new Date());
+  private lastMonthKey = signal<string | null>(null);
+  editingId = signal<string | null>(null);
+
+  monthKey = computed(() => {
+    const d = this.currentDate();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    return `${y}-${m}`;
+  });
+
+  monthLabel = computed(() => {
+    const d = this.currentDate();
+    return d.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+  });
+
+  private commitEditingIfAny() {
+    const id = this.editingId();
+    if (!id) return;
+    const line = this.vm.lines().find((x: any) => x.id === id);
+    if (!line) return;
+    this.editingId.set(null);
+    // le patch local est déjà fait, on force juste un flush
+    this.vm.flush(this.monthKey());
   }
 
-  remove(id: string) {
-    const it = this.items.find(x => x.id === id);
-    if (!it) return;
-    const ok = confirm(`Supprimer "${it.category}" ?`);
+  prevMonth() {
+    this.commitEditingIfAny();
+    const d = this.currentDate();
+    this.currentDate.set(new Date(d.getFullYear(), d.getMonth() - 1, 1));
+  }
+
+  nextMonth() {
+    this.commitEditingIfAny();
+    const d = this.currentDate();
+    this.currentDate.set(new Date(d.getFullYear(), d.getMonth() + 1, 1));
+  }
+
+  startEdit(id: string) {
+    this.editingId.set(id);
+  }
+
+  onAmountChange(id: string, value: any) {
+    this.vm.patchLineLocal(id, { amount: Number(value) || 0 });
+  }
+
+  // blur/enter => flush du mois (batch)
+  flushNow() {
+    this.editingId.set(null);
+    this.vm.flush(this.monthKey());
+  }
+
+  duplicateFromPrevious() {
+    this.vm.flush(this.monthKey());
+    const d = this.currentDate();
+    const prev = new Date(d.getFullYear(), d.getMonth() - 1, 1);
+    const prevKey = `${prev.getFullYear()}-${String(prev.getMonth() + 1).padStart(2, '0')}`;
+    this.vm.duplicate(prevKey, this.monthKey());
+  }
+
+  regenerateFromTemplate() {
+    const ok = confirm('Régénérer depuis le modèle ? (cela remplace ce mois)');
     if (!ok) return;
-    this.items = this.items.filter(x => x.id !== id);
+    this.vm.reset(this.monthKey());
   }
-  openAddExpense() {
-    this.uiDialog.openTransactionSheet({ mode: 'add', defaultType: 'expense' })
-      .subscribe(res => {
-        if (!res || res.action !== 'create') return;
-        console.log('NEW TX FROM BUDGET', res.payload);
-      });
+  openAddDialog(presetType?: 'income' | 'expense') {
+    const isDesktop = window.matchMedia('(min-width: 992px)').matches;
+
+    const ref = this.dialog.open(AddLineDialogComponent, {
+      data: { presetType },
+      autoFocus: true,
+      disableClose: false,
+      // Mobile: bottom sheet full screen, Desktop: right drawer
+      panelClass: isDesktop ? ['ios-drawer-right'] : ['ios-sheet-full'],
+      width: isDesktop ? '420px' : '100vw',
+      height: isDesktop ? '100vh' : '100vh',
+      maxWidth: isDesktop ? '420px' : '100vw',
+      position: isDesktop ? { right: '0', top: '0' } : { bottom: '0', left: '0' },
+    });
+
+    ref.afterClosed().subscribe((res?: AddLineDialogResult) => {
+      if (!res) return;
+
+      const line = {
+        id: crypto.randomUUID(),
+        type: res.type,
+        category: res.category,
+        label: res.label,
+        amount: res.amount,
+        icon: res.icon,
+        color: res.color,
+      };
+
+      this.vm.addLineLocal(line);
+      // autosave debounce + flush on leave already handle persistence
+    });
   }
+
 }
