@@ -156,3 +156,23 @@
     opacity: 1;
   }
 }
+
+.ios-sheet-compact .mat-mdc-dialog-container{
+  padding: 0 !important;
+}
+
+.ios-sheet-compact .mdc-dialog__surface{
+  border-radius: 28px !important;
+  overflow: hidden;
+  animation: iosCompactUp 160ms ease-out;
+}
+
+.ios-sheet-compact .mdc-dialog__surface{
+  border-radius: 28px !important;
+  overflow: hidden;
+}
+
+@keyframes iosCompactUp {
+  from { transform: translateY(12px); opacity: .90; }
+  to   { transform: translateY(0); opacity: 1; }
+}

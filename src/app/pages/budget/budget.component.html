@@ -1,149 +1,195 @@
 <div class="budget container">
 
-    <div class="month-nav card">
-        <button mat-icon-button (click)="prevMonth()">
-            <mat-icon>chevron_left</mat-icon>
-        </button>
+  <!-- ===== Month navigation ===== -->
+  <div class="month-nav card">
+    <button mat-icon-button (click)="prevMonth()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
 
-        <div class="month-title">
-            <div class="month">{{ monthLabel() }}</div>
-            <div class="muted small">Prévisionnel • {{ vm.createdFrom() }}</div>
-            <!-- <div class="muted small">
-                Prévisionnel • {{ vm.createdFrom() }}
-                @if (vm.saving()) {
-                <span class="saving-pill">• Enregistrement…</span>
-                } @else if (vm.dirty()) {
-                <span class="saving-pill">• Modifié</span>
-                }
-            </div> -->
-        </div>
+    <div class="month-title">
+      <div class="month">{{ monthLabel() }}</div>
 
-        <button mat-icon-button (click)="nextMonth()">
-            <mat-icon>chevron_right</mat-icon>
-        </button>
+      <div class="muted small">
+        Prévisionnel • {{ vm.createdFrom() }}
+        @if (vm.saving()) {
+          <span class="saving-pill">• Enregistrement…</span>
+        } @else if (vm.dirty()) {
+          <span class="saving-pill">• Modifié</span>
+        }
+      </div>
     </div>
 
-    @if (vm.error()) {
-    <div class="card section error">{{ vm.error() }}</div>
-    }
+    <button mat-icon-button (click)="nextMonth()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
 
-    <div class="balance-hero">
-        <div>
-            <div class="label">Solde prévisionnel</div>
-            <div class="balance" [class.negative]="vm.balance() < 0" [class.positive]="vm.balance() >= 0">
-                {{ vm.balance() | number:'1.0-2' }} €
-            </div>
-            <div class="hint">
-                Revenus {{ vm.totalIncome() | number:'1.0-2' }} € • Dépenses {{ vm.totalExpense() | number:'1.0-2' }} €
-            </div>
-        </div>
-        <button mat-icon-button class="add-in-card" (click)="openAddDialog()">
-            <mat-icon>add</mat-icon>
-        </button>
+  @if (vm.error()) {
+    <div class="card section error">
+      {{ vm.error() }}
     </div>
-    <!-- bouton flottant iOS (mobile) -->
-    <button mat-fab class="fab-ios" (click)="openAddDialog()">
+  }
+
+  <!-- ===== Balance card ===== -->
+  <div class="balance-hero card">
+    <div class="balance-left">
+      <div class="label">Solde prévisionnel</div>
+
+      <div class="balance" [class.negative]="vm.balance() < 0" [class.positive]="vm.balance() >= 0">
+        {{ vm.balance() | number:'1.0-2' }} €
+      </div>
+
+      <div class="hint">
+        Revenus {{ vm.totalIncome() | number:'1.0-2' }} €
+        • Dépenses {{ vm.totalExpense() | number:'1.0-2' }} €
+      </div>
+    </div>
+
+    <button mat-icon-button class="add-in-card" (click)="openCreateTxn()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <!-- ===== Revenus ===== -->
+  <div class="card section dense">
+    <div class="section-head">
+      <div class="head-left">
+        <div class="title">Revenus</div>
+        <div class="total positive">{{ vm.totalIncome() | number:'1.0-2' }} €</div>
+      </div>
+
+      <button mat-icon-button class="mini-add" (click)="openCreateTxn('income')" aria-label="Ajouter un revenu">
         <mat-icon>add</mat-icon>
-    </button>
-
-    <!-- <div class="tools card">
-    <button mat-stroked-button class="tool" (click)="duplicateFromPrevious()" [disabled]="vm.loading()">
-      <mat-icon>content_copy</mat-icon>
-      Dupliquer mois précédent
-    </button>
-
-    <button mat-stroked-button class="tool" (click)="regenerateFromTemplate()" [disabled]="vm.loading()">
-      <mat-icon>autorenew</mat-icon>
-      Régénérer depuis modèle
-    </button>
-  </div> -->
-
-    <!-- Revenus -->
-    <div class="card section">
-        <div class="section-head">
-            <div>
-                <div class="title">Revenus</div>
-                <div class="total positive">{{ vm.totalIncome() | number:'1.0-2' }} €</div>
-            </div>
-        </div>
-
-        <div class="list card-inner">
-            @if (vm.loading()) {
-            <div class="muted small pad">Chargement...</div>
-            } @else {
-            @for (it of vm.incomes(); track it.id) {
-            <div class="row ios-row">
-                <div class="left">
-                    <div class="squircle" [style.background]="it.color + '18'">
-                        <mat-icon [style.color]="it.color">{{ it.icon }}</mat-icon>
-                    </div>
-
-                    <div class="meta">
-                        <div class="top-line">
-                            <span class="cat">{{ it.category }}</span>
-
-                            <span class="value" (click)="startEdit(it.id)">
-                                @if (editingId() !== it.id) {
-                                {{ it.amount | number:'1.0-2' }} €
-                                } @else {
-                                <input class="amount-input" type="number" [ngModel]="it.amount"
-                                    (ngModelChange)="onAmountChange(it.id, $event)" (blur)="flushNow()"
-                                    (keydown.enter)="flushNow()" autofocus />
-                                }
-                            </span>
-                        </div>
-
-                        <div class="desc muted">{{ it.label }}</div>
-                    </div>
-                </div>
-            </div>
-            }
-            }
-        </div>
+      </button>
     </div>
 
-    <!-- Dépenses -->
-    <div class="card section">
-        <div class="section-head">
-            <div>
-                <div class="title">Dépenses</div>
-                <div class="total negative">{{ vm.totalExpense() | number:'1.0-2' }} €</div>
-            </div>
-        </div>
+    <div class="list card-inner dense-inner">
+      @if (vm.loading()) {
+        <div class="muted small pad">Chargement…</div>
+      } @else if (vm.incomes().length === 0) {
+        <div class="empty muted small pad">Aucun revenu pour ce mois.</div>
+      } @else {
+        @for (it of vm.incomes(); track it.id) {
+          <div class="row-inline">
+            <div class="left">
+              <div class="squircle" [style.background]="it.color + '18'">
+                <mat-icon [style.color]="it.color">{{ it.icon }}</mat-icon>
+              </div>
 
-        <div class="list card-inner">
-            @if (vm.loading()) {
-            <div class="muted small pad">Chargement...</div>
-            } @else {
-            @for (it of vm.expenses(); track it.id) {
-            <div class="row ios-row">
-                <div class="left">
-                    <div class="squircle" [style.background]="it.color + '18'">
-                        <mat-icon [style.color]="it.color">{{ it.icon }}</mat-icon>
-                    </div>
+              <div class="meta">
+                <span class="cat" [matTooltip]="it.category" matTooltipShowDelay="300">
+                  {{ it.category }}
+                </span>
 
-                    <div class="meta">
-                        <div class="top-line">
-                            <span class="cat">{{ it.category }}</span>
-
-                            <span class="value" (click)="startEdit(it.id)">
-                                @if (editingId() !== it.id) {
-                                {{ it.amount | number:'1.0-2' }} €
-                                } @else {
-                                <input class="amount-input" type="number" [ngModel]="it.amount"
-                                    (ngModelChange)="onAmountChange(it.id, $event)" (blur)="flushNow()"
-                                    (keydown.enter)="flushNow()" autofocus />
-                                }
-                            </span>
-                        </div>
-
-                        <div class="desc muted">{{ it.label }}</div>
-                    </div>
+                <div class="desc muted" [matTooltip]="it.label" matTooltipShowDelay="300">
+                  {{ it.label }}
                 </div>
+              </div>
             </div>
-            }
-            }
-        </div>
+
+            <div class="right">
+              <div class="amount-wrap">
+                <input
+                  #incAmount
+                  class="amount-input fixed"
+                  type="text"
+                  inputmode="decimal"
+                  autocomplete="off"
+                  spellcheck="false"
+                  [value]="formatMoney(it.amount)"
+                  (focus)="onAmountFocus(incAmount, it.id, it.amount)"
+                  (input)="onAmountTyped(it.id, $any($event.target).value)"
+                  (keydown.enter)="onAmountEnter(incAmount, it.id)"
+                  (blur)="onAmountBlur(incAmount, it.id)"
+                />
+              </div>
+              <span class="eur">€</span>
+
+              <button
+                mat-icon-button
+                class="more"
+                (click)="openEditTxn(it)"
+                aria-label="Options">
+                <mat-icon>more_horiz</mat-icon>
+              </button>
+            </div>
+          </div>
+        }
+      }
     </div>
+  </div>
+
+  <!-- ===== Dépenses ===== -->
+  <div class="card section dense">
+    <div class="section-head">
+      <div class="head-left">
+        <div class="title">Dépenses</div>
+        <div class="total negative">{{ vm.totalExpense() | number:'1.0-2' }} €</div>
+      </div>
+
+      <button mat-icon-button class="mini-add" (click)="openCreateTxn('expense')" aria-label="Ajouter une dépense">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <div class="list card-inner dense-inner">
+      @if (vm.loading()) {
+        <div class="muted small pad">Chargement…</div>
+      } @else if (vm.expenses().length === 0) {
+        <div class="empty muted small pad">Aucune dépense pour ce mois.</div>
+      } @else {
+        @for (it of vm.expenses(); track it.id) {
+          <div class="row-inline">
+            <div class="left">
+              <div class="squircle" [style.background]="it.color + '18'">
+                <mat-icon [style.color]="it.color">{{ it.icon }}</mat-icon>
+              </div>
+
+              <div class="meta">
+                <span class="cat" [matTooltip]="it.category" matTooltipShowDelay="300">
+                  {{ it.category }}
+                </span>
+
+                <div class="desc muted" [matTooltip]="it.label" matTooltipShowDelay="300">
+                  {{ it.label }}
+                </div>
+              </div>
+            </div>
+
+            <div class="right">
+              <div class="amount-wrap">
+                <input
+                  #expAmount
+                  class="amount-input fixed"
+                  type="text"
+                  inputmode="decimal"
+                  autocomplete="off"
+                  spellcheck="false"
+                  [value]="formatMoney(it.amount)"
+                  (focus)="onAmountFocus(expAmount, it.id, it.amount)"
+                  (input)="onAmountTyped(it.id, $any($event.target).value)"
+                  (keydown.enter)="onAmountEnter(expAmount, it.id)"
+                  (blur)="onAmountBlur(expAmount, it.id)"
+                />
+              </div>
+              <span class="eur">€</span>
+
+              <button
+                mat-icon-button
+                class="more"
+                (click)="openEditTxn(it)"
+                aria-label="Options">
+                <mat-icon>more_horiz</mat-icon>
+              </button>
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </div>
 
 </div>
+
+<button mat-fab class="fab-ios" (click)="openCreateTxn()" aria-label="Ajouter">
+  <mat-icon>add</mat-icon>
+</button>

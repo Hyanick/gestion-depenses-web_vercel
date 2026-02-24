@@ -34,3 +34,7 @@ export class AddLineLocal {
     static readonly type = '[Budget] Add Line Local';
     constructor(public line: BudgetLine) { }
 }
+export class DeleteLineLocal {
+  static readonly type = '[Budget] Delete Line Local';
+  constructor(public id: string) {}
+}

@@ -1,9 +1,10 @@
 import { Injectable, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngxs/store';
-import { AddLineLocal, DuplicateFromPrevious, FlushMonth, LoadMonthBudget, PatchLineLocal, ResetFromTemplate, SetCurrentMonth } from './budget.actions';
+import { AddLineLocal, DeleteLineLocal , DuplicateFromPrevious, FlushMonth, LoadMonthBudget, PatchLineLocal, ResetFromTemplate, SetCurrentMonth } from './budget.actions';
 import { BudgetState } from './budget.state';
 import { BudgetLine } from './budget.models';
+
 
 @Injectable({ providedIn: 'root' })
 export class BudgetProvider {
@@ -84,5 +85,12 @@ export class BudgetProvider {
     addLineLocal(line: BudgetLine) {
         this.store.dispatch(new AddLineLocal(line));
     }
+
+
+deleteLineLocal(id: string) {
+  this.store.dispatch(new DeleteLineLocal(id));
+}
+
+
 
 }

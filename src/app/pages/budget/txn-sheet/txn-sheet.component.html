@@ -1,0 +1,77 @@
+<div class="sheet">
+
+  <!-- Header -->
+  <div class="sheet__header">
+    <div class="sheet__title">
+      {{ mode === 'edit' ? 'Modifier la transaction' : 'Ajouter une transaction' }}
+    </div>
+
+    <div class="sheet__headerActions">
+
+      @if (mode === 'edit') {
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="deleteTxn()">
+            <mat-icon class="danger">delete</mat-icon>
+            <span class="danger">Supprimer</span>
+          </button>
+        </mat-menu>
+      }
+
+      <button mat-icon-button (click)="cancel()">
+        <mat-icon>close</mat-icon>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Type -->
+  <div class="type-toggle">
+    <button
+      [class.active]="type() === 'expense'"
+      (click)="type.set('expense')">
+      Dépense
+    </button>
+
+    <button
+      [class.active]="type() === 'income'"
+      (click)="type.set('income')">
+      Revenu
+    </button>
+  </div>
+
+  <!-- Form -->
+  <div class="form">
+
+    <label>Catégorie</label>
+    <input  placeholder="Ex: logement" />
+
+    <label>Libellé</label>
+    <input  placeholder="Ex: loyer" />
+
+    <label>Montant</label>
+    <input
+      type="number"
+      [ngModel]="amount()"
+      (ngModelChange)="amount.set($event)"
+    />
+
+  </div>
+
+  <!-- Footer -->
+  <div class="sheet__footer">
+    <button class="cancel" (click)="cancel()">Annuler</button>
+
+    <button
+      mat-flat-button
+      class="cta"
+      [disabled]="!canSubmit()"
+      (click)="submit()">
+      {{ mode === 'edit' ? 'Enregistrer' : 'Ajouter' }}
+    </button>
+  </div>
+
+</div>
