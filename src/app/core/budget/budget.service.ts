@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class BudgetService {
   private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl;;
+  private apiUrl = environment.apiUrl;
 
   getMonth(monthKey: string): Observable<MonthBudget> {
     return this.http.get<MonthBudget>(`${this.apiUrl}/budgets/${monthKey}`);

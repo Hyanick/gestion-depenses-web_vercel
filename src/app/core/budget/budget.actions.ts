@@ -35,6 +35,9 @@ export class AddLineLocal {
     constructor(public line: BudgetLine) { }
 }
 export class DeleteLineLocal {
-  static readonly type = '[Budget] Delete Line Local';
-  constructor(public id: string) {}
+    static readonly type = '[Budget] Delete Line Local';
+    constructor(public id: string) { }
+}
+export class GlobalReinit {
+    static readonly type = '[app] Global Reinitialisation Action'
 }

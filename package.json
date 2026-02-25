@@ -7,7 +7,7 @@
   },
   "packageManager": "pnpm@9.12.3",
   "scripts": {
-    "start": "ng serve",
+    "start": "ng serve --proxy-config proxy.conf.json",
     "build": "npx ng build --configuration production",
     "watch": "npx ng build --watch --configuration development",
     "test": "npx ng test"

@@ -1,7 +1,7 @@
 import { ApplicationConfig, importProvidersFrom, LOCALE_ID, provideZoneChangeDetection, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { NgxsReduxDevtoolsPluginModule, withNgxsReduxDevtoolsPlugin } from '@ngxs/devtools-plugin';
 import { withNgxsFormPlugin } from '@ngxs/form-plugin';
@@ -15,13 +15,15 @@ import { CategoriesState } from './features/categories/data-access/categories.st
 import { TransactionsState } from './features/transactions/data-access/transactions.state';
 import { provideServiceWorker } from '@angular/service-worker';
 import { BudgetState } from './core/budget/budget.state';
+import { JwtInterceptor } from './core/auth/jwt.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
   { provide: LOCALE_ID, useValue: 'fr-FR' },
+  { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   provideRouter(routes),
-  provideHttpClient(),
-    provideAnimations(),
+  provideHttpClient(withInterceptorsFromDi()),
+  provideAnimations(),
   provideStore(
     [TransactionsState, CategoriesState, BudgetState],
     withNgxsReduxDevtoolsPlugin(),
@@ -44,8 +46,8 @@ export const appConfig: ApplicationConfig = {
       storage: 1, // ✅ utilisation correcte de l'enum,
     })
   ), provideServiceWorker('ngsw-worker.js', {
-            enabled: !isDevMode(),
-            registrationStrategy: 'registerWhenStable:30000'
-          }),
+    enabled: !isDevMode(),
+    registrationStrategy: 'registerWhenStable:30000'
+  }),
   ]
 };

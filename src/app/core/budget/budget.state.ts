@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BudgetLine, MonthBudget } from './budget.models';
 import { BudgetService } from './budget.service';
 import { catchError, tap, throwError } from 'rxjs';
-import { LoadMonthBudget, PatchLineLocal, SetCurrentMonth, FlushMonth, DuplicateFromPrevious, ResetFromTemplate, AddLineLocal, DeleteLineLocal } from './budget.actions';
+import { LoadMonthBudget, PatchLineLocal, SetCurrentMonth, FlushMonth, DuplicateFromPrevious, ResetFromTemplate, AddLineLocal, DeleteLineLocal, GlobalReinit } from './budget.actions';
 
 export interface BudgetMonthCache {
     monthKey: string;
@@ -13,6 +13,10 @@ export interface BudgetMonthCache {
     error: string | null;
     dirty: boolean;
     saving: boolean;
+}
+const BUDGET_INITIAL_STATE: BudgetStateModel = {
+    currentMonthKey: null,
+    months: {}
 }
 
 export interface BudgetStateModel {
@@ -76,7 +80,7 @@ export class BudgetState {
         const cached = this.ensureMonth(s0, monthKey);
 
         // ✅ si on a déjà des lignes en cache, on ne refetch pas (comportement zip)
-       // if (cached.lines.length > 0) return;
+        // if (cached.lines.length > 0) return;
 
         ctx.patchState({
             months: {
@@ -295,21 +299,27 @@ export class BudgetState {
         });
     }
     @Action(DeleteLineLocal)
-deleteLineLocal(ctx: StateContext<BudgetStateModel>, { id }: DeleteLineLocal) {
-  const s = ctx.getState();
-  const k = s.currentMonthKey;
-  if (!k) return;
+    deleteLineLocal(ctx: StateContext<BudgetStateModel>, { id }: DeleteLineLocal) {
+        const s = ctx.getState();
+        const k = s.currentMonthKey;
+        if (!k) return;
 
-  const m = this.ensureMonth(s, k);
-  ctx.patchState({
-    months: {
-      ...(s.months ?? {}),
-      [k]: {
-        ...m,
-        lines: m.lines.filter(l => l.id !== id),
-        dirty: true,
-      },
-    },
-  });
-}
+        const m = this.ensureMonth(s, k);
+        ctx.patchState({
+            months: {
+                ...(s.months ?? {}),
+                [k]: {
+                    ...m,
+                    lines: m.lines.filter(l => l.id !== id),
+                    dirty: true,
+                },
+            },
+        });
+    }
+
+    @Action(GlobalReinit)
+    GlobalReinit({ setState }: StateContext<BudgetStateModel>) {
+        setState(BUDGET_INITIAL_STATE)
+
+    }
 }
