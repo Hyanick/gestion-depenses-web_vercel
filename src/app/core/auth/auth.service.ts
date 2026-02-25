@@ -1,10 +1,10 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
-import { environment } from '../../../environments/environment.development';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { GlobalReinit } from '../budget/budget.actions';
+import { environment } from '../../../environments/environment';
 
 export type AuthUser = {
     id: string;
