@@ -5,11 +5,45 @@
         <div class="title">GDM</div>
 
         <div class="actions">
-            <mat-icon>notifications</mat-icon>
-            <mat-icon>person</mat-icon>
-            <button mat-button (click)="logout()">
+
+            <!-- Notifications: last login -->
+            <button mat-icon-button class="icon-btn" [matMenuTriggerFor]="notifMenu" [matTooltip]="lastLoginTooltip()"
+                matTooltipPosition="below" aria-label="Notifications">
+                <mat-icon>notifications</mat-icon>
+            </button>
+
+            <mat-menu #notifMenu="matMenu" xPosition="before" yPosition="below">
+                <div class="menu-title">Dernière connexion</div>
+                <div class="menu-sub">{{ lastLoginLabel() }}</div>
+            </mat-menu>
+
+            <!-- User menu -->
+            <button mat-icon-button class="icon-btn" [matMenuTriggerFor]="userMenu" aria-label="Utilisateur">
+                <mat-icon>person</mat-icon>
+            </button>
+
+            <mat-menu #userMenu="matMenu" xPosition="before" yPosition="below">
+                <div class="menu-user">
+                    <div class="menu-user__name">{{ userName() }}</div>
+                    <div class="menu-user__meta"><span>{{ username() }}</span></div>
+                </div>
+
+                <button mat-menu-item routerLink="/settings">
+                    <mat-icon>settings</mat-icon>
+                    <span>Paramètres</span>
+                </button>
+
+                <button mat-menu-item (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    <span>Déconnexion</span>
+                </button>
+            </mat-menu>
+
+            <!-- Logout direct -->
+            <button mat-button class="logout-btn" (click)="logout()">
                 <mat-icon>logout</mat-icon>
             </button>
+
         </div>
     </header>
 
@@ -24,10 +58,6 @@
             <mat-icon>home</mat-icon>
             <span>Prévisionnel</span>
         </a>
-        <!-- <a routerLink="/home" routerLinkActive="active">
-            <mat-icon>home</mat-icon>
-            <span>Accueil</span>
-        </a> -->
 
         <a routerLink="/analysis" routerLinkActive="active">
             <mat-icon>analytics</mat-icon>

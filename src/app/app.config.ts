@@ -1,7 +1,7 @@
 import { ApplicationConfig, importProvidersFrom, LOCALE_ID, provideZoneChangeDetection, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { NgxsReduxDevtoolsPluginModule, withNgxsReduxDevtoolsPlugin } from '@ngxs/devtools-plugin';
 import { withNgxsFormPlugin } from '@ngxs/form-plugin';
@@ -16,13 +16,14 @@ import { TransactionsState } from './features/transactions/data-access/transacti
 import { provideServiceWorker } from '@angular/service-worker';
 import { BudgetState } from './core/budget/budget.state';
 import { JwtInterceptor } from './core/auth/jwt.interceptor';
+import { authInterceptor } from './core/auth/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
   { provide: LOCALE_ID, useValue: 'fr-FR' },
   { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   provideRouter(routes),
-  provideHttpClient(withInterceptorsFromDi()),
+  provideHttpClient(withInterceptors([authInterceptor])),
   provideAnimations(),
   provideStore(
     [TransactionsState, CategoriesState, BudgetState],
