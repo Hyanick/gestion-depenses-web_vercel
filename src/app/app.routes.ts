@@ -54,6 +54,11 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./pages/template/template.component').then(m => m.TemplateComponent),
             },
+            {
+                path: 'history',
+                loadComponent: () =>
+                    import('./pages/history/history.component').then(m => m.HistoryComponent)
+            },
         ],
     },
 
